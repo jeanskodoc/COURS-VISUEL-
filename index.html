@@ -21,25 +21,16 @@
             overflow-x: hidden;
         }
 
-        /* Image de fond intégrée du contenu Ecran.jpeg */
-        .background-content {
+        /* Image de fond Ecran.jpeg à 100% */
+        .background-image {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -2;
-            background: 
-                /* Fond sombre avec légère transparence */
-                linear-gradient(
-                    rgba(15, 23, 42, 0.8),
-                    rgba(30, 41, 59, 0.9)
-                ),
-                /* Rendu visuel du contenu Ecran.jpeg */
-                url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzBiMTIyOTtzdG9wLW9wYWNpdHk6MC45Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMDUwYTE2O3N0b3Atb3BhY2l0eTowLjkiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSIxMCUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjQwcHgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmZmZmYiPkxlbMOzb24gOiBMZXMgdm9sY2FuczwvdGV4dD48dGV4dCB4PSIxMCUiIHk9IjIwJSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjhweCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0IiBmaWxsPSIjZTJlNmVhIj48dHNwYW4geD0iMTAlIiBkeT0iMGVtIj5DcmF0ZXI8L3RzcGFuPjx0c3BhbiB4PSIxMCUiIGR5PSIyZW0iPkxhdmU8L3RzcGFuPjx0c3BhbiB4PSIxMCUiIGR5PSI0ZW0iPkNoZW1pbsOpZTwvdHNwYW4+PHRzcGFuIHg9IjEwJSIgZHk9IjZlbSI+Q2hhbWJyZSBtYWdtYXRpcXVlPC90c3Bhbj48L3RleHQ+PHJlY3QgeD0iOCUiIHk9IjE4JSIgd2lkdGg9IjE4MHB4IiBoZWlnaHQ9IjE4MHB4IiBmaWxsPSJub25lIiBzdHJva2U9IiMzNDk4ZGIiIHN0cm9rZS13aWR0aD0iMiIvPjx0ZXh0IHg9IjUwJSIgeT0iNDUlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzNXB4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZmZmZmZmIj5RdWVzdGlvbiA6PC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzMHB4IiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZTJlNmVhIj5RdWVsbGUgZXN0IGxhIHJvY2hlIGVuIGZ1c2lvbiBxdWkgc29ydCBkJ3VuIHZvbGNhbiA/PC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjAlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyOHB4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZmZmZmZmIj5BKSBMYSBMYXZlPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjUlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyOHB4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZmZmZmZmIj5CKSBMZSBTYWJsZTwvdGV4dD48dGV4dCB4PSI1MCUiIHk9IjcwJSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjhweCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZmZmZiI+QykgTGEgR2xhY2U8L3RleHQ+PHRleHQgeD0iODAlIiB5PSI3NSUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjM1cHgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmZmZmYiPlZpZMOpbyA6IMOpcnVwdGlvbiBkdSB2b2xjYW48L3RleHQ+PHRleHQgeD0iODAlIiB5PSI4NSUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjMwcHgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmZmZmYiPklORk88L3RleHQ+PHRleHQgeD0iODAlIiB5PSI5MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0cHgiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNlMmU2ZWEiPkZhaXQgSW50w6lyZXNzYW50IDo8L3RleHQ+PHRleHQgeD0iODAlIiB5PSI5NSUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjIycHgiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNlMmU2ZWEiPklsIGV4aXN0ZSBldm4uIDEgNTAwIHZvbGNhbnMgYWN0aWZzIHN1ciBUZXJyZS48L3RleHQ+PHRleHQgeD0iNDAlIiB5PSI5MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjM1cHgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmNTlhMmEiPjg1JTwvdGV4dD48dGV4dCB4PSI1MCUiIHk9IjkwJSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzVweCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzYyYzQ2MyI+MTAlPC90ZXh0Pjx0ZXh0IHg9IjYwJSIgeT0iOTAlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzNXB4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOGI1MGViIj41JTwvdGV4dD48dGV4dCB4PSIyMCUiIHk9Ijk4JSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzVweCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZmZmZiI+RMOpZmkgUmFwaWRlICE8L3RleHQ+PHRleHQgeD0iMjAlIiB5PSIxMDMlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzMHB4IiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZTJlNmVhIj5MYSBsYXZlIHNvcnQgcGFyIGxlLi4uPC90ZXh0Pjx0ZXh0IHg9IjIwJSIgeT0iMTA4JSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzBweCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZmZmZiI+UsOpcG9uc2UgOiBMYSBjaGVpbWluw6llPC90ZXh0Pjwvc3ZnPg==');
-            background-size: cover;
-            background-position: center;
-            filter: brightness(0.85) contrast(1.1);
+            object-fit: cover;
+            filter: brightness(0.9) contrast(1.05);
         }
 
         /* Overlay pour lisibilité */
@@ -55,10 +46,10 @@
             align-items: center;
         }
 
-        /* Interface minimale transparente */
+        /* Interface transparente */
         .ui-overlay {
             background: rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
             border-radius: 15px;
             padding: 2rem;
             max-width: 800px;
@@ -71,7 +62,7 @@
         .main-title {
             font-size: 2.2rem;
             margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
             font-weight: 700;
             color: #fff;
         }
@@ -79,7 +70,7 @@
         .subtitle {
             font-size: 1.2rem;
             margin-bottom: 1.5rem;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.9);
             font-weight: 500;
             color: #e0e0e0;
         }
@@ -98,7 +89,7 @@
             max-width: 600px;
             margin: 0 auto 1.5rem;
             line-height: 1.5;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
             padding: 0 1rem;
         }
 
@@ -228,7 +219,7 @@
             margin-top: 1.5rem;
             font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.7);
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
         }
 
         .footer p {
@@ -392,23 +383,25 @@
                 padding: 1rem;
             }
             
-            .background-content {
-                background-size: contain;
-                background-repeat: no-repeat;
-                background-position: center top;
+            .background-image {
+                object-fit: contain;
                 background-color: #0f172a;
             }
         }
 
-        /* Effet de parallaxe léger */
-        .background-content {
-            transition: transform 0.3s ease-out;
+        /* Mode plein écran optimisé */
+        body:fullscreen .background-image {
+            filter: brightness(0.95) contrast(1.1);
+        }
+        
+        body:fullscreen .ui-overlay {
+            background: rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
 <body>
-    <!-- Contenu Ecran.jpeg intégré comme image de fond -->
-    <div class="background-content"></div>
+    <!-- Image de fond Ecran.jpeg -->
+    <img src="Ecran.jpeg" alt="Leçon sur les volcans" class="background-image">
     
     <!-- Interface système discrète -->
     <div class="system-ui fullscreen-btn" onclick="toggleFullscreen()">
@@ -587,7 +580,7 @@
         // Effet de parallaxe au défilement
         window.addEventListener('scroll', function() {
             const scrolled = window.pageYOffset;
-            const background = document.querySelector('.background-content');
+            const background = document.querySelector('.background-image');
             if (background) {
                 background.style.transform = `translateY(${scrolled * 0.15}px)`;
             }
