@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Système de Cours Projetés</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        /* L'image de fond - Ecran.jpeg */
+        .volcano-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: url('https://images.unsplash.com/photo-1618939300356-2bd7f3c85b33?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') no-repeat center center;
+            background-size: cover;
+            filter: brightness(0.85);
+        }
+        
+        /* Overlay très léger pour les éléments UI */
+        .ui-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(0.5px);
+            pointer-events: none;
+        }
+        
+        /* Interface minimale */
+        .interface {
+            position: fixed;
+            z-index: 3;
+        }
+        
+        /* Titre discret en haut */
+        .title-container {
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            width: 100%;
+        }
+        
+        .main-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        
+        .subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 8px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+        }
+        
+        /* Bouton principal - très discret */
+        .main-button {
+            bottom: 40px;
+            right: 40px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            padding: 10px 22px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            min-width: 160px;
+            justify-content: center;
+        }
+        
+        .main-button:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Indicateur de mode */
+        .mode-indicator {
+            top: 40px;
+            right: 40px;
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+            border-radius: 50px;
+            padding: 6px 16px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            pointer-events: auto;
+        }
+        
+        .pulse-dot {
+            width: 6px;
+            height: 6px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* Bouton plein écran */
+        .fullscreen-btn {
+            top: 40px;
+            left: 40px;
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .fullscreen-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
+        }
+        
+        /* Contenu informatif (caché par défaut) */
+        .info-panel {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            z-index: 3;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 300px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+        
+        .info-panel.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        
+        .info-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        /* Animations légères */
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0px); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+        
+        .title-container {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+            
+            .subtitle {
+                font-size: 0.7rem;
+                letter-spacing: 4px;
+            }
+            
+            .main-button {
+                bottom: 20px;
+                right: 20px;
+                padding: 8px 16px;
+                font-size: 0.8rem;
+                min-width: 140px;
+            }
+            
+            .mode-indicator, .fullscreen-btn {
+                top: 20px;
+                right: 20px;
+                left: 20px;
+            }
+            
+            .fullscreen-btn {
+                top: 20px;
+                left: 20px;
+                width: 36px;
+                height: 36px;
+            }
+            
+            .mode-indicator {
+                justify-content: center;
+                top: 80px;
+            }
+            
+            .info-panel {
+                bottom: 90px;
+                left: 20px;
+                right: 20px;
+                max-width: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 1.5rem;
+                padding: 0 20px;
+            }
+            
+            .subtitle {
+                font-size: 0.6rem;
+                letter-spacing: 2px;
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Image de fond du volcan -->
+    <div class="volcano-bg"></div>
+    
+    <!-- Overlay très léger -->
+    <div class="ui-overlay"></div>
+    
+    <!-- Interface utilisateur minimale -->
+    <div class="interface title-container">
+        <div class="main-title">Système Projeté</div>
+        <div class="subtitle">Éducation Immersive</div>
+    </div>
+    
+    <!-- Bouton plein écran -->
+    <div class="interface fullscreen-btn" onclick="toggleFullscreen()">
+        <i class="fas fa-expand"></i>
+    </div>
+    
+    <!-- Indicateur de mode -->
+    <div class="interface mode-indicator">
+        <div class="pulse-dot"></div>
+        Mode Présentation
+    </div>
+    
+    <!-- Panneau d'information -->
+    <div class="info-panel" id="infoPanel">
+        <div class="info-title">Système de Cours Projetés</div>
+        <p>Interface modernisée pour l'enseignement secondaire. Navigation intuitive, contenu interactif optimisé pour les projecteurs et expérience immersive.</p>
+        <p style="margin-top: 10px; font-size: 0.8rem; opacity: 0.7;">Cliquez sur le bouton en bas à droite pour accéder au cours.</p>
+    </div>
+    
+    <!-- Bouton principal discret -->
+    <a href="Ecran.html" class="interface main-button" target="_blank">
+        <i class="fas fa-external-link-alt"></i>
+        Accéder au cours
+    </a>
+
+    <script>
+        // Plein écran
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Erreur: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+        
+        // Afficher/masquer le panneau d'info
+        let infoTimeout;
+        
+        function showInfo() {
+            const panel = document.getElementById('infoPanel');
+            panel.classList.add('show');
+            
+            clearTimeout(infoTimeout);
+            infoTimeout = setTimeout(() => {
+                panel.classList.remove('show');
+            }, 5000);
+        }
+        
+        function hideInfo() {
+            const panel = document.getElementById('infoPanel');
+            panel.classList.remove('show');
+        }
+        
+        // Afficher info au survol du titre
+        document.querySelector('.title-container').addEventListener('mouseenter', showInfo);
+        document.querySelector('.title-container').addEventListener('mouseleave', hideInfo);
+        
+        // Masquer info au clic n'importe où
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.info-panel') && !e.target.closest('.title-container')) {
+                hideInfo();
+            }
+        });
+        
+        // Effet parallaxe subtil
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 5;
+            const y = (e.clientY / window.innerHeight - 0.5) * 5;
+            
+            document.querySelector('.title-container').style.transform = 
+                `translateX(calc(-50% + ${x}px)) translateY(${y}px)`;
+            
+            document.querySelector('.main-button').style.transform = 
+                `translateX(${-x}px) translateY(${-y}px)`;
+        });
+        
+        // Détection du mode plein écran
+        document.addEventListener('fullscreenchange', () => {
+            const isFullscreen = !!document.fullscreenElement;
+            const indicator = document.querySelector('.mode-indicator');
+            
+            if (isFullscreen) {
+                indicator.innerHTML = '<div class="pulse-dot"></div> Plein Écran Actif';
+                indicator.style.background = 'rgba(59, 130, 246, 0.15)';
+                indicator.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+            } else {
+                indicator.innerHTML = '<div class="pulse-dot"></div> Mode Présentation';
+                indicator.style.background = 'rgba(34, 197, 94, 0.12)';
+                indicator.style.borderColor = 'rgba(34, 197, 94, 0.25)';
+            }
+        });
+        
+        // Auto-masquage des éléments UI après inactivité
+        let inactivityTimer;
+        const uiElements = document.querySelectorAll('.interface');
+        
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            
+            // Montrer tous les éléments
+            uiElements.forEach(el => {
+                el.style.opacity = '1';
+                el.style.pointerEvents = 'auto';
+            });
+            
+            // Masquer après 5 secondes d'inactivité
+            inactivityTimer = setTimeout(() => {
+                uiElements.forEach(el => {
+                    if (!el.classList.contains('title-container')) {
+                        el.style.opacity = '0.3';
+                        el.style.pointerEvents = 'none';
+                    }
+                });
+            }, 5000);
+        }
+        
+        // Événements de réinitialisation du timer
+        ['mousemove', 'click', 'keydown', 'touchstart'].forEach(event => {
+            document.addEventListener(event, resetInactivityTimer);
+        });
+        
+        // Initialiser
+        resetInactivityTimer();
+    </script>
+</body>
+</html>
