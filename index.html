@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Système de Cours Projetés</title>
+    <title>Système Projeté Éducatif</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -11,309 +11,495 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            background: #000;
             min-height: 100vh;
-            overflow: hidden;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: transparent;
+            color: white;
             position: relative;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            overflow-x: hidden;
         }
-        
-        /* L'image de fond - Ecran.jpeg */
-        .volcano-bg {
+
+        /* Image de fond intégrée du contenu Ecran.jpeg */
+        .background-content {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
-            background: url('https://images.unsplash.com/photo-1618939300356-2bd7f3c85b33?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') no-repeat center center;
+            z-index: -2;
+            background: 
+                /* Fond sombre avec légère transparence */
+                linear-gradient(
+                    rgba(15, 23, 42, 0.8),
+                    rgba(30, 41, 59, 0.9)
+                ),
+                /* Rendu visuel du contenu Ecran.jpeg */
+                url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzBiMTIyOTtzdG9wLW9wYWNpdHk6MC45Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMDUwYTE2O3N0b3Atb3BhY2l0eTowLjkiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSIxMCUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjQwcHgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmZmZmYiPkxlbMOzb24gOiBMZXMgdm9sY2FuczwvdGV4dD48dGV4dCB4PSIxMCUiIHk9IjIwJSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjhweCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0IiBmaWxsPSIjZTJlNmVhIj48dHNwYW4geD0iMTAlIiBkeT0iMGVtIj5DcmF0ZXI8L3RzcGFuPjx0c3BhbiB4PSIxMCUiIGR5PSIyZW0iPkxhdmU8L3RzcGFuPjx0c3BhbiB4PSIxMCUiIGR5PSI0ZW0iPkNoZW1pbsOpZTwvdHNwYW4+PHRzcGFuIHg9IjEwJSIgZHk9IjZlbSI+Q2hhbWJyZSBtYWdtYXRpcXVlPC90c3Bhbj48L3RleHQ+PHJlY3QgeD0iOCUiIHk9IjE4JSIgd2lkdGg9IjE4MHB4IiBoZWlnaHQ9IjE4MHB4IiBmaWxsPSJub25lIiBzdHJva2U9IiMzNDk4ZGIiIHN0cm9rZS13aWR0aD0iMiIvPjx0ZXh0IHg9IjUwJSIgeT0iNDUlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzNXB4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZmZmZmZmIj5RdWVzdGlvbiA6PC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzMHB4IiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZTJlNmVhIj5RdWVsbGUgZXN0IGxhIHJvY2hlIGVuIGZ1c2lvbiBxdWkgc29ydCBkJ3VuIHZvbGNhbiA/PC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjAlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyOHB4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZmZmZmZmIj5BKSBMYSBMYXZlPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjUlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyOHB4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZmZmZmZmIj5CKSBMZSBTYWJsZTwvdGV4dD48dGV4dCB4PSI1MCUiIHk9IjcwJSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjhweCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZmZmZiI+QykgTGEgR2xhY2U8L3RleHQ+PHRleHQgeD0iODAlIiB5PSI3NSUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjM1cHgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmZmZmYiPlZpZMOpbyA6IMOpcnVwdGlvbiBkdSB2b2xjYW48L3RleHQ+PHRleHQgeD0iODAlIiB5PSI4NSUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjMwcHgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmZmZmYiPklORk88L3RleHQ+PHRleHQgeD0iODAlIiB5PSI5MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0cHgiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNlMmU2ZWEiPkZhaXQgSW50w6lyZXNzYW50IDo8L3RleHQ+PHRleHQgeD0iODAlIiB5PSI5NSUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjIycHgiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNlMmU2ZWEiPklsIGV4aXN0ZSBldm4uIDEgNTAwIHZvbGNhbnMgYWN0aWZzIHN1ciBUZXJyZS48L3RleHQ+PHRleHQgeD0iNDAlIiB5PSI5MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjM1cHgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmNTlhMmEiPjg1JTwvdGV4dD48dGV4dCB4PSI1MCUiIHk9IjkwJSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzVweCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzYyYzQ2MyI+MTAlPC90ZXh0Pjx0ZXh0IHg9IjYwJSIgeT0iOTAlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzNXB4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOGI1MGViIj41JTwvdGV4dD48dGV4dCB4PSIyMCUiIHk9Ijk4JSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzVweCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZmZmZiI+RMOpZmkgUmFwaWRlICE8L3RleHQ+PHRleHQgeD0iMjAlIiB5PSIxMDMlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzMHB4IiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZTJlNmVhIj5MYSBsYXZlIHNvcnQgcGFyIGxlLi4uPC90ZXh0Pjx0ZXh0IHg9IjIwJSIgeT0iMTA4JSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzBweCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZmZmZiI+UsOpcG9uc2UgOiBMYSBjaGVpbWluw6llPC90ZXh0Pjwvc3ZnPg==');
             background-size: cover;
-            filter: brightness(0.85);
+            background-position: center;
+            filter: brightness(0.85) contrast(1.1);
         }
-        
-        /* Overlay très léger pour les éléments UI */
-        .ui-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            background: rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(0.5px);
-            pointer-events: none;
-        }
-        
-        /* Interface minimale */
-        .interface {
-            position: fixed;
-            z-index: 3;
-        }
-        
-        /* Titre discret en haut */
-        .title-container {
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
+
+        /* Overlay pour lisibilité */
+        .content {
+            position: relative;
+            z-index: 1;
             text-align: center;
-            width: 100%;
-        }
-        
-        .main-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: rgba(255, 255, 255, 0.95);
-            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-        
-        .subtitle {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 8px;
-            letter-spacing: 8px;
-            text-transform: uppercase;
-        }
-        
-        /* Bouton principal - très discret */
-        .main-button {
-            bottom: 40px;
-            right: 40px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 50px;
-            padding: 10px 22px;
-            color: rgba(255, 255, 255, 0.9);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
-            letter-spacing: 1px;
+            padding: 1rem;
+            min-height: 100vh;
             display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            pointer-events: auto;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            min-width: 160px;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
         }
-        
-        .main-button:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+
+        /* Interface minimale transparente */
+        .ui-overlay {
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
-        
-        /* Indicateur de mode */
-        .mode-indicator {
-            top: 40px;
-            right: 40px;
-            background: rgba(34, 197, 94, 0.12);
-            border: 1px solid rgba(34, 197, 94, 0.25);
-            border-radius: 50px;
-            padding: 6px 16px;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.75rem;
+
+        /* Titre principal */
+        .main-title {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
             font-weight: 500;
-            letter-spacing: 1px;
+            color: #e0e0e0;
+        }
+
+        .separator {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            margin: 1rem auto;
+            border-radius: 1px;
+        }
+
+        /* Description */
+        .description {
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.5;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            padding: 0 1rem;
+        }
+
+        /* Sections de fonctionnalités */
+        .features-container {
             display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            max-width: 700px;
+        }
+
+        .feature-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 1.2rem;
+            width: 220px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            border-color: #3498db;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+            color: #3498db;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            color: #2ecc71;
+        }
+
+        .feature-list {
+            list-style: none;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+
+        .feature-list li {
+            margin-bottom: 0.3rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #f39c12;
+        }
+
+        /* Boutons REDUITS */
+        .buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .action-button {
+            display: inline-flex;
             align-items: center;
             gap: 6px;
+            background: linear-gradient(135deg, #3498db, #2ecc71);
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            min-width: 150px;
+            justify-content: center;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .action-button.secondary {
+            background: linear-gradient(135deg, #9b59b6, #3498db);
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .action-button.secondary:hover {
+            background: linear-gradient(135deg, #8e44ad, #2980b9);
+        }
+
+        .action-button i {
+            font-size: 0.8rem;
+        }
+
+        /* Tags de technologies */
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+            margin: 1rem 0;
+            max-width: 500px;
+        }
+
+        .tech-tag {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Pied de page */
+        .footer {
+            margin-top: 1.5rem;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .footer p {
+            margin-bottom: 0.2rem;
+        }
+
+        /* Interface système discrète */
+        .system-ui {
+            position: fixed;
+            z-index: 10;
             pointer-events: auto;
         }
-        
+
+        /* Bouton plein écran */
+        .fullscreen-btn {
+            top: 15px;
+            left: 15px;
+            width: 34px;
+            height: 34px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(0, 0, 0, 0.6);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+        }
+
+        /* Indicateur de mode */
+        .presentation-mode {
+            top: 15px;
+            right: 15px;
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+            border-radius: 50px;
+            padding: 5px 10px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
         .pulse-dot {
-            width: 6px;
-            height: 6px;
+            width: 4px;
+            height: 4px;
             background: #4ade80;
             border-radius: 50%;
-            animation: pulse 2s infinite;
+            animation: pulseDot 2s infinite;
         }
-        
-        @keyframes pulse {
+
+        @keyframes pulseDot {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
         }
-        
-        /* Bouton plein écran */
-        .fullscreen-btn {
-            top: 40px;
-            left: 40px;
-            width: 42px;
-            height: 42px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            color: rgba(255, 255, 255, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            pointer-events: auto;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+        /* Animation simple */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
-        .fullscreen-btn:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.25);
-            transform: scale(1.1);
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
         }
-        
-        /* Contenu informatif (caché par défaut) */
-        .info-panel {
-            position: fixed;
-            bottom: 40px;
-            left: 40px;
-            z-index: 3;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 25px;
-            max-width: 300px;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.9rem;
-            line-height: 1.5;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
-            pointer-events: none;
-        }
-        
-        .info-panel.show {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-        }
-        
-        .info-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-        
-        /* Animations légères */
-        @keyframes float {
-            0%, 100% { transform: translateX(-50%) translateY(0px); }
-            50% { transform: translateX(-50%) translateY(-10px); }
-        }
-        
-        .title-container {
-            animation: float 6s ease-in-out infinite;
-        }
-        
+
         /* Responsive */
         @media (max-width: 768px) {
+            .ui-overlay {
+                padding: 1.5rem;
+                width: 95%;
+            }
+            
             .main-title {
-                font-size: 2rem;
-                letter-spacing: 2px;
+                font-size: 1.8rem;
             }
             
             .subtitle {
-                font-size: 0.7rem;
-                letter-spacing: 4px;
+                font-size: 1rem;
             }
             
-            .main-button {
-                bottom: 20px;
-                right: 20px;
-                padding: 8px 16px;
+            .description {
+                font-size: 0.9rem;
+            }
+            
+            .features-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.8rem;
+            }
+            
+            .feature-card {
+                width: 90%;
+                max-width: 280px;
+                padding: 1rem;
+            }
+            
+            .action-button {
+                padding: 0.4rem 0.8rem;
                 font-size: 0.8rem;
                 min-width: 140px;
             }
             
-            .mode-indicator, .fullscreen-btn {
-                top: 20px;
-                right: 20px;
-                left: 20px;
+            .buttons-container {
+                flex-direction: column;
+                align-items: center;
             }
             
-            .fullscreen-btn {
-                top: 20px;
-                left: 20px;
-                width: 36px;
-                height: 36px;
+            .tech-tags {
+                gap: 0.4rem;
             }
             
-            .mode-indicator {
-                justify-content: center;
-                top: 80px;
+            .tech-tag {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.7rem;
             }
-            
-            .info-panel {
-                bottom: 90px;
-                left: 20px;
-                right: 20px;
-                max-width: none;
+
+            .fullscreen-btn, .presentation-mode {
+                position: relative;
+                top: auto;
+                left: auto;
+                right: auto;
+                margin: 10px;
+                display: inline-flex;
+            }
+
+            .presentation-mode {
+                margin-top: 15px;
             }
         }
-        
+
         @media (max-width: 480px) {
             .main-title {
                 font-size: 1.5rem;
-                padding: 0 20px;
             }
             
             .subtitle {
-                font-size: 0.6rem;
-                letter-spacing: 2px;
-                padding: 0 20px;
+                font-size: 0.9rem;
             }
+            
+            .ui-overlay {
+                padding: 1rem;
+            }
+            
+            .background-content {
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center top;
+                background-color: #0f172a;
+            }
+        }
+
+        /* Effet de parallaxe léger */
+        .background-content {
+            transition: transform 0.3s ease-out;
         }
     </style>
 </head>
 <body>
-    <!-- Image de fond du volcan -->
-    <div class="volcano-bg"></div>
+    <!-- Contenu Ecran.jpeg intégré comme image de fond -->
+    <div class="background-content"></div>
     
-    <!-- Overlay très léger -->
-    <div class="ui-overlay"></div>
-    
-    <!-- Interface utilisateur minimale -->
-    <div class="interface title-container">
-        <div class="main-title">Système Projeté</div>
-        <div class="subtitle">Éducation Immersive</div>
-    </div>
-    
-    <!-- Bouton plein écran -->
-    <div class="interface fullscreen-btn" onclick="toggleFullscreen()">
+    <!-- Interface système discrète -->
+    <div class="system-ui fullscreen-btn" onclick="toggleFullscreen()">
         <i class="fas fa-expand"></i>
     </div>
-    
-    <!-- Indicateur de mode -->
-    <div class="interface mode-indicator">
+
+    <div class="system-ui presentation-mode">
         <div class="pulse-dot"></div>
-        Mode Présentation
+        Présentation
     </div>
-    
-    <!-- Panneau d'information -->
-    <div class="info-panel" id="infoPanel">
-        <div class="info-title">Système de Cours Projetés</div>
-        <p>Interface modernisée pour l'enseignement secondaire. Navigation intuitive, contenu interactif optimisé pour les projecteurs et expérience immersive.</p>
-        <p style="margin-top: 10px; font-size: 0.8rem; opacity: 0.7;">Cliquez sur le bouton en bas à droite pour accéder au cours.</p>
+
+    <!-- Contenu principal -->
+    <div class="content">
+        <div class="ui-overlay fade-in">
+            <h1 class="main-title">Système Projeté Éducatif</h1>
+            <h2 class="subtitle">Modernisation de l'Enseignement</h2>
+            <div class="separator"></div>
+            
+            <p class="description">
+                Interface immersive pour cours projetés dans les établissements scolaires.<br>
+                Technologie moderne au service de la pédagogie.
+            </p>
+
+            <!-- Fonctionnalités principales -->
+            <div class="features-container">
+                <!-- Fonctionnalité 1: Interface -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3 class="feature-title">Interface Immersive</h3>
+                    <ul class="feature-list">
+                        <li>Design optimisé projecteur</li>
+                        <li>Navigation intuitive</li>
+                        <li>Mode plein écran</li>
+                        <li>Interface responsive</li>
+                        <li>Animations pédagogiques</li>
+                    </ul>
+                </div>
+
+                <!-- Fonctionnalité 2: Contenu -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="feature-title">Contenu Interactif</h3>
+                    <ul class="feature-list">
+                        <li>Cours multimédias</li>
+                        <li>Quiz et évaluations</li>
+                        <li>Visualisations</li>
+                        <li>Vidéos intégrées</li>
+                        <li>Contenu adaptatif</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="buttons-container">
+                <a href="Ecran.html" class="action-button" target="_blank">
+                    <i class="fas fa-external-link-alt"></i>
+                    Ouvrir le Cours
+                </a>
+                <a href="javascript:void(0)" class="action-button secondary" onclick="showDemo()">
+                    <i class="fas fa-play-circle"></i>
+                    Voir Démo
+                </a>
+            </div>
+
+            <!-- Tags technologiques -->
+            <div class="tech-tags">
+                <div class="tech-tag">Interface Immersive</div>
+                <div class="tech-tag">Contenu Interactif</div>
+                <div class="tech-tag">Plein Écran</div>
+                <div class="tech-tag">Pédagogie Moderne</div>
+                <div class="tech-tag">Multi-plateforme</div>
+            </div>
+
+            <!-- Pied de page -->
+            <div class="footer">
+                <p><strong>Système Projeté Éducatif</strong> - Modernisation de l'enseignement</p>
+                <p>Interface immersive pour cours projetés | Collèges & Lycées</p>
+            </div>
+        </div>
     </div>
-    
-    <!-- Bouton principal discret -->
-    <a href="Ecran.html" class="interface main-button" target="_blank">
-        <i class="fas fa-external-link-alt"></i>
-        Accéder au cours
-    </a>
 
     <script>
         // Plein écran
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Erreur: ${err.message}`);
+                    console.log(`Erreur plein écran: ${err.message}`);
                 });
             } else {
                 if (document.exitFullscreen) {
@@ -321,81 +507,117 @@
                 }
             }
         }
-        
-        // Afficher/masquer le panneau d'info
-        let infoTimeout;
-        
-        function showInfo() {
-            const panel = document.getElementById('infoPanel');
-            panel.classList.add('show');
-            
-            clearTimeout(infoTimeout);
-            infoTimeout = setTimeout(() => {
-                panel.classList.remove('show');
-            }, 5000);
-        }
-        
-        function hideInfo() {
-            const panel = document.getElementById('infoPanel');
-            panel.classList.remove('show');
-        }
-        
-        // Afficher info au survol du titre
-        document.querySelector('.title-container').addEventListener('mouseenter', showInfo);
-        document.querySelector('.title-container').addEventListener('mouseleave', hideInfo);
-        
-        // Masquer info au clic n'importe où
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.info-panel') && !e.target.closest('.title-container')) {
-                hideInfo();
-            }
-        });
-        
-        // Effet parallaxe subtil
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 5;
-            const y = (e.clientY / window.innerHeight - 0.5) * 5;
-            
-            document.querySelector('.title-container').style.transform = 
-                `translateX(calc(-50% + ${x}px)) translateY(${y}px)`;
-            
-            document.querySelector('.main-button').style.transform = 
-                `translateX(${-x}px) translateY(${-y}px)`;
-        });
-        
-        // Détection du mode plein écran
+
+        // Mise à jour de l'indicateur de mode
         document.addEventListener('fullscreenchange', () => {
             const isFullscreen = !!document.fullscreenElement;
-            const indicator = document.querySelector('.mode-indicator');
+            const indicator = document.querySelector('.presentation-mode');
             
             if (isFullscreen) {
-                indicator.innerHTML = '<div class="pulse-dot"></div> Plein Écran Actif';
+                indicator.innerHTML = '<div class="pulse-dot"></div> Plein Écran';
                 indicator.style.background = 'rgba(59, 130, 246, 0.15)';
-                indicator.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+                indicator.style.borderColor = 'rgba(59, 130, 246, 0.25)';
             } else {
-                indicator.innerHTML = '<div class="pulse-dot"></div> Mode Présentation';
-                indicator.style.background = 'rgba(34, 197, 94, 0.12)';
+                indicator.innerHTML = '<div class="pulse-dot"></div> Présentation';
+                indicator.style.background = 'rgba(34, 197, 94, 0.15)';
                 indicator.style.borderColor = 'rgba(34, 197, 94, 0.25)';
             }
         });
-        
-        // Auto-masquage des éléments UI après inactivité
-        let inactivityTimer;
-        const uiElements = document.querySelectorAll('.interface');
-        
-        function resetInactivityTimer() {
-            clearTimeout(inactivityTimer);
+
+        // Démo du système
+        function showDemo() {
+            const demo = document.createElement('div');
+            demo.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.95);
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                animation: fadeIn 0.3s ease;
+                padding: 20px;
+                text-align: center;
+            `;
             
-            // Montrer tous les éléments
+            demo.innerHTML = `
+                <div style="max-width: 500px;">
+                    <div style="font-size: 3rem; margin-bottom: 20px; color: #3498db;">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: white;">Système Projeté Éducatif</h2>
+                    <p style="font-size: 1rem; margin-bottom: 25px; color: rgba(255, 255, 255, 0.9); line-height: 1.5;">
+                        Interface immersive pour la modernisation de l'enseignement :
+                    </p>
+                    <div style="margin: 25px 0;">
+                        <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 10px;">
+                            <div style="font-size: 1.8rem; color: #2ecc71; margin-bottom: 10px;">
+                                <i class="fas fa-desktop"></i>
+                            </div>
+                            <div style="font-size: 0.9rem; color: white;">Interface optimisée pour projecteurs</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 10px;">
+                            <div style="font-size: 1.8rem; color: #f39c12; margin-bottom: 10px;">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <div style="font-size: 0.9rem; color: white;">Contenu interactif et multimédia</div>
+                        </div>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" style="
+                        margin-top: 25px;
+                        background: linear-gradient(135deg, #3498db, #2ecc71);
+                        color: white;
+                        padding: 10px 30px;
+                        border-radius: 25px;
+                        cursor: pointer;
+                        font-size: 0.9rem;
+                        border: none;
+                        transition: all 0.3s ease;
+                    ">Fermer la Démo</button>
+                </div>
+            `;
+            
+            document.body.appendChild(demo);
+        }
+
+        // Effet de parallaxe au défilement
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const background = document.querySelector('.background-content');
+            if (background) {
+                background.style.transform = `translateY(${scrolled * 0.15}px)`;
+            }
+        });
+
+        // Animation des cartes au survol
+        const featureCards = document.querySelectorAll('.feature-card');
+        featureCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.4)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.boxShadow = 'none';
+            });
+        });
+
+        // Auto-masquage de l'interface après inactivité
+        let hideTimeout;
+        const uiElements = document.querySelectorAll('.ui-overlay, .system-ui');
+        
+        function showUI() {
+            clearTimeout(hideTimeout);
             uiElements.forEach(el => {
                 el.style.opacity = '1';
                 el.style.pointerEvents = 'auto';
             });
             
-            // Masquer après 5 secondes d'inactivité
-            inactivityTimer = setTimeout(() => {
+            hideTimeout = setTimeout(() => {
                 uiElements.forEach(el => {
-                    if (!el.classList.contains('title-container')) {
+                    if (!el.classList.contains('fullscreen-btn') && !el.classList.contains('presentation-mode')) {
                         el.style.opacity = '0.3';
                         el.style.pointerEvents = 'none';
                     }
@@ -403,13 +625,21 @@
             }, 5000);
         }
         
-        // Événements de réinitialisation du timer
-        ['mousemove', 'click', 'keydown', 'touchstart'].forEach(event => {
-            document.addEventListener(event, resetInactivityTimer);
+        ['mousemove', 'click', 'touchstart'].forEach(event => {
+            document.addEventListener(event, showUI);
         });
         
-        // Initialiser
-        resetInactivityTimer();
+        showUI();
+
+        // Ajout de l'animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
