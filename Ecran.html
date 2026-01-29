@@ -8,14 +8,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4a6bdf;
-            --primary-dark: #3a5bd0;
-            --secondary: #ff6b6b;
-            --secondary-dark: #ff5252;
-            --accent: #feca57;
-            --accent-dark: #f9b342;
-            --dark: #2c3e50;
-            --darker: #1a2530;
+            --primary: #008751; /* Vert togolais */
+            --primary-dark: #006b3f;
+            --secondary: #ffcc00; /* Jaune togolais */
+            --secondary-dark: #e6b800;
+            --accent: #ef2d2d; /* Rouge togolais */
+            --accent-dark: #d42a2a;
+            --neutral: #f0f0f0;
+            --dark: #0a3a2a;
+            --darker: #06231a;
             --light: #f9f9f9;
             --lighter: #ffffff;
             --success: #1dd1a1;
@@ -24,12 +25,18 @@
             --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.15);
             --radius: 12px;
             --transition: all 0.3s ease;
+            --transition-slow: all 0.5s ease;
+            --flag-gradient: linear-gradient(135deg, #008751 33%, #ffcc00 33% 66%, #ef2d2d 66%);
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
         }
         
         body {
@@ -46,7 +53,7 @@
             left: 20px;
             z-index: 1000;
             padding: 12px 24px;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.95);
             color: var(--primary);
             border: none;
             border-radius: 50px;
@@ -59,7 +66,7 @@
             box-shadow: var(--shadow);
             transition: var(--transition);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(74, 107, 223, 0.2);
+            border: 1px solid rgba(0, 135, 81, 0.2);
         }
         
         .btn-retour:hover {
@@ -73,11 +80,12 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            width: 100%;
         }
         
-        /* Header */
+        /* Header avec drapeau togolais */
         header {
-            background: linear-gradient(135deg, var(--primary), var(--dark));
+            background: linear-gradient(135deg, var(--dark), var(--primary));
             color: white;
             padding: 1.5rem 0;
             position: sticky;
@@ -86,10 +94,21 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
         
+        .header-flag {
+            height: 5px;
+            width: 100%;
+            background: var(--flag-gradient);
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
         .logo {
@@ -104,6 +123,7 @@
         .logo-icon {
             font-size: 2rem;
             animation: pulse 2s infinite;
+            color: var(--secondary);
         }
         
         @keyframes pulse {
@@ -116,18 +136,20 @@
             font-size: 1.1rem;
             opacity: 0.9;
             max-width: 500px;
+            color: var(--secondary);
         }
         
         .header-cta {
             display: flex;
             gap: 15px;
+            flex-wrap: wrap;
         }
         
         /* Hero Section */
         .hero {
             position: relative;
             padding: 6rem 0;
-            background: linear-gradient(135deg, #f0f4ff, #e3e9ff);
+            background: linear-gradient(135deg, #e8f5f0, #d4ecdf);
             overflow: hidden;
         }
         
@@ -138,9 +160,21 @@
             right: 0;
             width: 500px;
             height: 500px;
-            background: linear-gradient(45deg, rgba(74, 107, 223, 0.1), rgba(255, 107, 107, 0.05));
+            background: linear-gradient(45deg, rgba(0, 135, 81, 0.1), rgba(255, 204, 0, 0.08));
             border-radius: 50%;
             transform: translate(30%, -30%);
+            z-index: 0;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -200px;
+            left: -200px;
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(45deg, rgba(239, 45, 45, 0.08), rgba(0, 135, 81, 0.05));
+            border-radius: 50%;
             z-index: 0;
         }
         
@@ -157,7 +191,7 @@
             margin-bottom: 1.5rem;
             color: var(--dark);
             line-height: 1.2;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -178,6 +212,17 @@
         
         .stat-item {
             text-align: center;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: var(--radius);
+            min-width: 150px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
         }
         
         .stat-number {
@@ -199,14 +244,14 @@
             justify-content: center;
             gap: 10px;
             background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
-            color: white;
+            color: var(--dark);
             padding: 18px 45px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
             font-size: 1.1rem;
             transition: var(--transition);
-            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+            box-shadow: 0 8px 20px rgba(255, 204, 0, 0.3);
             border: none;
             cursor: pointer;
             position: relative;
@@ -220,7 +265,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             transition: 0.5s;
         }
         
@@ -230,29 +275,30 @@
         
         .cta-button:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(255, 107, 107, 0.4);
-            background: linear-gradient(135deg, var(--secondary-dark), #ff4141);
+            box-shadow: 0 12px 25px rgba(255, 204, 0, 0.4);
+            background: linear-gradient(135deg, var(--secondary-dark), #e6a800);
         }
         
         .cta-button-primary {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            box-shadow: 0 8px 20px rgba(74, 107, 223, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 135, 81, 0.3);
+            color: white;
         }
         
         .cta-button-primary:hover {
-            background: linear-gradient(135deg, var(--primary-dark), #2a4fd8);
-            box-shadow: 0 12px 25px rgba(74, 107, 223, 0.4);
+            background: linear-gradient(135deg, var(--primary-dark), #005a34);
+            box-shadow: 0 12px 25px rgba(0, 135, 81, 0.4);
         }
         
         .cta-button-accent {
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            box-shadow: 0 8px 20px rgba(254, 202, 87, 0.3);
-            color: var(--dark);
+            box-shadow: 0 8px 20px rgba(239, 45, 45, 0.3);
+            color: white;
         }
         
         .cta-button-accent:hover {
-            background: linear-gradient(135deg, var(--accent-dark), #f7a928);
-            box-shadow: 0 12px 25px rgba(254, 202, 87, 0.4);
+            background: linear-gradient(135deg, var(--accent-dark), #c22525);
+            box-shadow: 0 12px 25px rgba(239, 45, 45, 0.4);
         }
         
         /* Features Section */
@@ -271,6 +317,7 @@
         .section-title h2 {
             font-size: 2.5rem;
             display: inline-block;
+            position: relative;
         }
         
         .section-title h2::after {
@@ -281,7 +328,7 @@
             transform: translateX(-50%);
             width: 80px;
             height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: var(--flag-gradient);
             border-radius: 2px;
         }
         
@@ -295,7 +342,7 @@
         
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2.5rem;
             margin-top: 3rem;
         }
@@ -319,7 +366,7 @@
             left: 0;
             width: 5px;
             height: 100%;
-            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            background: var(--flag-gradient);
             opacity: 0;
             transition: var(--transition);
         }
@@ -342,7 +389,7 @@
         }
         
         .feature-card:hover .feature-icon {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(5deg);
             color: var(--secondary);
         }
         
@@ -360,7 +407,7 @@
         /* Demo Section */
         .demo-section {
             padding: 6rem 0;
-            background: linear-gradient(135deg, #f0f4ff, #e3e9ff);
+            background: linear-gradient(135deg, #e8f5f0, #d4ecdf);
             position: relative;
             overflow: hidden;
         }
@@ -372,7 +419,7 @@
             right: -200px;
             width: 600px;
             height: 600px;
-            background: linear-gradient(45deg, rgba(74, 107, 223, 0.08), rgba(255, 107, 107, 0.03));
+            background: linear-gradient(45deg, rgba(0, 135, 81, 0.08), rgba(255, 204, 0, 0.05));
             border-radius: 50%;
             z-index: 0;
         }
@@ -402,12 +449,12 @@
             left: 0;
             width: 100%;
             height: 5px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: var(--flag-gradient);
         }
         
         .credential-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
@@ -418,11 +465,13 @@
             border-radius: 10px;
             text-align: left;
             transition: var(--transition);
+            border-left: 4px solid var(--primary);
         }
         
         .credential-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-left-color: var(--secondary);
         }
         
         .credential-item strong {
@@ -440,17 +489,20 @@
         }
         
         .price-tag {
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
             color: var(--dark);
             padding: 15px 35px;
             border-radius: 50px;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
             font-weight: 700;
             margin: 2rem 0;
             font-size: 1.5rem;
-            box-shadow: 0 8px 20px rgba(254, 202, 87, 0.3);
+            box-shadow: 0 8px 20px rgba(255, 204, 0, 0.3);
             gap: 10px;
+            max-width: 90%;
         }
         
         .price-tag i {
@@ -482,9 +534,9 @@
         }
         
         .pricing-card.featured {
-            border-color: var(--accent);
+            border-color: var(--secondary);
             transform: scale(1.05);
-            box-shadow: 0 15px 35px rgba(254, 202, 87, 0.2);
+            box-shadow: 0 15px 35px rgba(255, 204, 0, 0.2);
         }
         
         .pricing-card.featured .pricing-badge {
@@ -492,13 +544,13 @@
             top: -15px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            background: var(--flag-gradient);
             color: var(--dark);
             padding: 8px 25px;
             border-radius: 30px;
             font-weight: 700;
             font-size: 0.9rem;
-            box-shadow: 0 5px 15px rgba(254, 202, 87, 0.3);
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.3);
         }
         
         .pricing-card:hover {
@@ -551,10 +603,14 @@
             color: var(--success);
         }
         
+        .pricing-features li i.fa-times {
+            color: var(--accent);
+        }
+        
         /* Testimonials */
         .testimonials {
             padding: 6rem 0;
-            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            background: linear-gradient(135deg, #e8f5f0, #bde0d1);
         }
         
         .testimonial-slider {
@@ -571,6 +627,18 @@
             box-shadow: var(--shadow);
             text-align: center;
             margin: 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--flag-gradient);
         }
         
         .testimonial-avatar {
@@ -578,7 +646,7 @@
             height: 80px;
             border-radius: 50%;
             margin: 0 auto 1.5rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -621,6 +689,7 @@
             border-radius: var(--radius);
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         .faq-question {
@@ -636,7 +705,7 @@
         }
         
         .faq-question:hover {
-            background-color: #f0f4ff;
+            background-color: #e8f5f0;
         }
         
         .faq-answer {
@@ -657,9 +726,22 @@
         
         /* Footer */
         footer {
-            background: linear-gradient(135deg, var(--darker), #0f141c);
+            background: linear-gradient(135deg, var(--darker), #06231a);
             color: white;
             padding: 4rem 0 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--flag-gradient);
+            z-index: 1;
         }
         
         .footer-content {
@@ -676,6 +758,7 @@
             font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
+            color: var(--secondary);
         }
         
         .footer-description {
@@ -687,7 +770,7 @@
         .footer-links h4 {
             font-size: 1.3rem;
             margin-bottom: 1.5rem;
-            color: white;
+            color: var(--secondary);
         }
         
         .footer-links ul {
@@ -716,6 +799,7 @@
             display: flex;
             gap: 15px;
             margin-top: 1.5rem;
+            flex-wrap: wrap;
         }
         
         .social-icon {
@@ -732,7 +816,8 @@
         }
         
         .social-icon:hover {
-            background-color: var(--primary);
+            background-color: var(--secondary);
+            color: var(--dark);
             transform: translateY(-5px);
         }
         
@@ -747,9 +832,10 @@
         }
         
         .hashtag {
-            color: var(--accent);
+            color: var(--secondary);
             font-weight: 500;
             transition: var(--transition);
+            cursor: pointer;
         }
         
         .hashtag:hover {
@@ -764,7 +850,40 @@
             font-size: 0.9rem;
         }
         
+        /* Ajouts responsifs */
+        .btn-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .btn-to-top:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+            transform: translateY(-5px);
+        }
+        
         /* Responsive */
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 95%;
+            }
+        }
+        
         @media (max-width: 992px) {
             .hero h1 {
                 font-size: 2.5rem;
@@ -776,6 +895,7 @@
             
             .features-grid, .pricing-grid {
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 2rem;
             }
             
             .credential-grid {
@@ -788,6 +908,19 @@
             
             .pricing-card.featured:hover {
                 transform: translateY(-10px);
+            }
+            
+            .hero-stats {
+                gap: 2rem;
+            }
+            
+            .stat-item {
+                min-width: 130px;
+                padding: 15px;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
             }
         }
         
@@ -807,11 +940,15 @@
             }
             
             .hero-stats {
-                gap: 2rem;
+                gap: 1.5rem;
+            }
+            
+            .stat-item {
+                min-width: 120px;
             }
             
             .stat-number {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             
             .section-title h2 {
@@ -821,6 +958,8 @@
             .cta-button {
                 padding: 15px 30px;
                 font-size: 1rem;
+                width: 100%;
+                max-width: 300px;
             }
             
             .btn-retour {
@@ -836,9 +975,28 @@
             .footer-links a {
                 justify-content: center;
             }
+            
+            .header-cta {
+                justify-content: center;
+                width: 100%;
+            }
+            
+            .price-tag {
+                font-size: 1.2rem;
+                padding: 12px 25px;
+            }
+            
+            .credentials {
+                padding: 2rem;
+            }
+            
+            .testimonial-card {
+                padding: 2rem;
+                margin: 0 10px;
+            }
         }
         
-        @media (max-width: 480px) {
+        @media (max-width: 576px) {
             .hero h1 {
                 font-size: 1.8rem;
             }
@@ -846,10 +1004,17 @@
             .hero-stats {
                 flex-direction: column;
                 gap: 1.5rem;
+                align-items: center;
+            }
+            
+            .stat-item {
+                width: 100%;
+                max-width: 250px;
             }
             
             .cta-button {
                 width: 100%;
+                max-width: 100%;
                 justify-content: center;
             }
             
@@ -858,7 +1023,62 @@
             }
             
             .credentials {
+                padding: 1.5rem;
+            }
+            
+            .faq-question {
+                padding: 1.2rem 1.5rem;
+                font-size: 0.95rem;
+            }
+            
+            .faq-answer {
+                padding: 0 1.5rem;
+            }
+            
+            .faq-item.active .faq-answer {
+                padding: 1.5rem;
+            }
+            
+            .hashtags {
+                gap: 10px;
+            }
+            
+            .hashtag {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .hero {
+                padding: 4rem 0;
+            }
+            
+            .features, .demo-section, .pricing, .testimonials, .faq {
+                padding: 4rem 0;
+            }
+            
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+            
+            .hero p {
+                font-size: 0.95rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.7rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1rem;
+            }
+            
+            .feature-card, .pricing-card {
                 padding: 2rem 1.5rem;
+            }
+            
+            .social-icons {
+                justify-content: center;
             }
         }
     </style>
@@ -869,6 +1089,7 @@
     </button>
     
     <header>
+        <div class="header-flag"></div>
         <div class="container">
             <div class="header-content">
                 <div>
@@ -876,7 +1097,7 @@
                         <i class="fas fa-chalkboard-teacher logo-icon"></i>
                         <span>VISIO-EDUC</span>
                     </div>
-                    <div class="tagline">La révolution pédagogique du 21ème siècle</div>
+                    <div class="tagline">La révolution pédagogique du 21ème siècle - Made in Togo</div>
                 </div>
                 <div class="header-cta">
                     <a href="#demo" class="cta-button cta-button-primary">
@@ -891,9 +1112,9 @@
         <div class="container">
             <div class="hero-content">
                 <h1>Rendez vos classes vivantes et captivantes</h1>
-                <p>Notre plateforme VISIO-EDUC transforme vos cours en expériences projetées et attrayantes. Fini les somnolences en classe, vos élèves vous acclameront grâce à des contenus interactifs et engageants !</p>
+                <p>Notre plateforme VISIO-EDUC, conçue au Togo, transforme vos cours en expériences projetées et attrayantes. Fini les somnolences en classe, vos élèves vous acclameront grâce à des contenus interactifs et engageants !</p>
                 
-                <div>
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
                     <a href="#demo" class="cta-button cta-button-accent">
                         <i class="fas fa-play-circle"></i> Voir la démonstration
                     </a>
@@ -994,7 +1215,7 @@
                             <div class="credential-value">EDUC789</div>
                         </div>
                     </div>
-                    <a href="https://jeanskodoc.github.io/VISIO-EDUC/" class="cta-button cta-button-primary">
+                    <a href="https://jeanskodoc.github.io/VISIO-EDUC/" class="cta-button cta-button-primary" style="margin-top: 20px;">
                         <i class="fas fa-sign-in-alt"></i> Se connecter à la démo
                     </a>
                 </div>
@@ -1078,10 +1299,10 @@
                 <div class="testimonial-card">
                     <div class="testimonial-avatar">MK</div>
                     <div class="testimonial-text">
-                        "VISIO-EDUC a transformé ma manière d'enseigner. Mes élèves sont maintenant plus engagés et participent activement aux cours. Les résultats sont visibles dès les premières semaines."
+                        "VISIO-EDUC a transformé ma manière d'enseigner. Mes élèves sont maintenant plus engagés et participent activement aux cours. Les résultats sont visibles dès les premières semaines. Fière que cette innovation vienne du Togo !"
                     </div>
                     <div class="testimonial-author">M. Kodoc</div>
-                    <div class="testimonial-role">Professeur de Mathématiques</div>
+                    <div class="testimonial-role">Professeur de Mathématiques, Lomé</div>
                 </div>
             </div>
         </div>
@@ -1147,7 +1368,7 @@
                         <span>VISIO-EDUC</span>
                     </div>
                     <p class="footer-description">
-                        VISIO-EDUC révolutionne l'enseignement en Afrique et partout dans le monde grâce à des solutions pédagogiques innovantes et accessibles. Rejoignez la révolution de l'éducation numérique !
+                        VISIO-EDUC révolutionne l'enseignement en Afrique et partout dans le monde grâce à des solutions pédagogiques innovantes et accessibles. Conçu au Togo, pour le monde. Rejoignez la révolution de l'éducation numérique !
                     </p>
                     <div class="social-icons">
                         <a href="#" class="social-icon">
@@ -1193,7 +1414,7 @@
                 <div class="footer-links">
                     <h4>Contact</h4>
                     <ul>
-                        <li><a href="#"><i class="fas fa-envelope"></i> contact@visio-educ.com</a></li>
+                        <li><a href="#"><i class="fas fa-envelope"></i> contact@visio-educ.tg</a></li>
                         <li><a href="#"><i class="fas fa-phone"></i> +228 XX XX XX XX</a></li>
                         <li><a href="#"><i class="fas fa-map-marker-alt"></i> Lomé, Togo</a></li>
                     </ul>
@@ -1202,39 +1423,46 @@
             
             <div class="hashtags">
                 <span class="hashtag">#InnovationPédagogique</span>
+                <span class="hashtag">#TogoNumérique</span>
+                <span class="hashtag">#EdTechTogo</span>
                 <span class="hashtag">#EnseignementModerne</span>
-                <span class="hashtag">#EdTech</span>
-                <span class="hashtag">#Teacher</span>
                 <span class="hashtag">#AfriqueNumérique</span>
                 <span class="hashtag">#EducationPourTous</span>
-                <span class="hashtag">#NumériqueÉducatif</span>
+                <span class="hashtag">#MadeInTogo</span>
                 <span class="hashtag">#CoursEnLigne</span>
                 <span class="hashtag">#VisioEduc</span>
                 <span class="hashtag">#RévolutionÉducative</span>
             </div>
             
             <div class="copyright">
-                <p>© 2025 VISIO-EDUC. Tous droits réservés. | Conçu avec <i class="fas fa-heart" style="color: #ff6b6b;"></i> pour l'éducation en Afrique</p>
+                <p>© 2025 VISIO-EDUC. Tous droits réservés. | Conçu avec <i class="fas fa-heart" style="color: #ef2d2d;"></i> pour l'éducation en Afrique | Made in Togo</p>
             </div>
         </div>
     </footer>
+    
+    <button class="btn-to-top" id="btnToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Animation des statistiques
             const statNumbers = document.querySelectorAll('.stat-number');
             statNumbers.forEach(stat => {
-                const target = parseInt(stat.textContent);
+                const originalText = stat.textContent;
+                const target = parseInt(originalText.replace(/[^0-9]/g, ''));
                 let current = 0;
-                const increment = target / 100;
+                const increment = target / 50;
                 const timer = setInterval(() => {
                     current += increment;
                     if (current >= target) {
                         current = target;
                         clearInterval(timer);
+                        stat.textContent = originalText;
+                    } else {
+                        stat.textContent = Math.floor(current) + (originalText.includes('+') ? '+' : originalText.includes('%') ? '%' : '');
                     }
-                    stat.textContent = Math.floor(current) + (stat.textContent.includes('+') ? '+' : stat.textContent.includes('%') ? '%' : '');
-                }, 20);
+                }, 30);
             });
             
             // FAQ accordéon
@@ -1242,32 +1470,34 @@
             faqQuestions.forEach(question => {
                 question.addEventListener('click', () => {
                     const item = question.parentElement;
-                    item.classList.toggle('active');
+                    const isActive = item.classList.contains('active');
                     
-                    // Fermer les autres items
-                    faqQuestions.forEach(otherQuestion => {
-                        if (otherQuestion !== question) {
-                            otherQuestion.parentElement.classList.remove('active');
-                        }
+                    // Fermer tous les items
+                    document.querySelectorAll('.faq-item').forEach(otherItem => {
+                        otherItem.classList.remove('active');
                     });
+                    
+                    // Ouvrir l'item cliqué s'il n'était pas actif
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
                 });
             });
             
             // Navigation fluide
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
-                    if (this.getAttribute('href') === '#') return;
-                    
-                    e.preventDefault();
                     const targetId = this.getAttribute('href');
-                    if (targetId === '#demo' || targetId === '#contact') {
-                        const targetElement = document.querySelector(targetId);
-                        if (targetElement) {
-                            window.scrollTo({
-                                top: targetElement.offsetTop - 80,
-                                behavior: 'smooth'
-                            });
-                        }
+                    
+                    if (targetId === '#' || targetId === '#!') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        e.preventDefault();
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
                     }
                 });
             });
@@ -1287,29 +1517,54 @@
             }, observerOptions);
             
             // Observer les éléments à animer
-            document.querySelectorAll('.feature-card, .pricing-card, .testimonial-card').forEach(el => {
+            document.querySelectorAll('.feature-card, .pricing-card, .testimonial-card, .stat-item').forEach(el => {
                 observer.observe(el);
             });
             
             // Bouton retour en haut
-            const backToTop = document.createElement('button');
-            backToTop.innerHTML = '<i class="fas fa-chevron-up"></i>';
-            backToTop.className = 'btn-retour';
-            backToTop.style.bottom = '20px';
-            backToTop.style.top = 'auto';
-            backToTop.style.left = 'auto';
-            backToTop.style.right = '20px';
-            backToTop.style.display = 'none';
-            backToTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-            document.body.appendChild(backToTop);
+            const btnToTop = document.getElementById('btnToTop');
             
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 500) {
-                    backToTop.style.display = 'flex';
+                    btnToTop.style.display = 'flex';
                 } else {
-                    backToTop.style.display = 'none';
+                    btnToTop.style.display = 'none';
                 }
             });
+            
+            btnToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // Ajout d'une classe pour l'animation des cartes au chargement
+            setTimeout(() => {
+                document.querySelectorAll('.feature-card, .pricing-card').forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add('animated');
+                    }, index * 100);
+                });
+            }, 500);
+            
+            // Détection de la taille d'écran pour ajustements
+            function handleResize() {
+                const isMobile = window.innerWidth <= 768;
+                const heroButtons = document.querySelector('.hero').querySelectorAll('.cta-button');
+                
+                if (isMobile) {
+                    heroButtons.forEach(btn => {
+                        btn.style.width = '100%';
+                        btn.style.maxWidth = '100%';
+                    });
+                } else {
+                    heroButtons.forEach(btn => {
+                        btn.style.width = 'auto';
+                        btn.style.maxWidth = '300px';
+                    });
+                }
+            }
+            
+            window.addEventListener('resize', handleResize);
+            handleResize(); // Initial call
         });
     </script>
 </body>
