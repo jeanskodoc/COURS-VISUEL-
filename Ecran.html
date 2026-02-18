@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>APC Sciences · Togo | Accès 7j avec compte à rebours</title>
+    <title>APC Sciences · Togo | Accès sécurisé 7 jours</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts Inter -->
@@ -258,6 +258,17 @@
             background:var(--rouge);
             transform:scale(1.05);
         }
+
+        /* Message d'erreur */
+        .error-message{
+            background:var(--rouge);
+            color:white;
+            padding:15px;
+            border-radius:40px;
+            text-align:center;
+            margin:20px 0;
+            display:none;
+        }
         @media (max-width:480px){
             .btn{padding:8px 16px;font-size:0.9rem;}
             .device{padding:6px 12px;}
@@ -391,13 +402,14 @@
             </form>
 
             <div class="alert" id="alertMessage"></div>
+            <div class="error-message" id="errorMessage"></div>
         </div>
 
         <!-- SECTION CONTENU PROTÉGÉ (visible uniquement si compte actif) -->
         <div id="protectedSection" class="protected-content">
             <div class="expiration-info" id="expirationMessage">
                 <span style="font-size:1.1rem; display:block; margin-bottom:5px;">⏳ Temps restant avant expiration</span>
-                <div class="countdown-big" id="countdown">7j 0h 0min</div>
+                <div class="countdown-big" id="countdown">7j 0h 0min 0s</div>
                 <div style="margin-top:8px; font-size:0.9rem;">Accès expirera le <span id="expirationDate"></span></div>
             </div>
             <h2 style="color:var(--vert); margin-bottom:20px;">📚 Vos cours et simulations</h2>
@@ -457,15 +469,22 @@
     <button id="btnToTop"><i class="fas fa-chevron-up"></i></button>
 
     <script>
-        // Gestion de l'expiration après 7 jours (stockage local)
+        // Constantes pour le stockage
         const STORAGE_KEY = 'apc_compte_actif';
         const EXPIRATION_KEY = 'apc_expiration';
+        const CODE_KEY = 'apc_code';
+        const IDENTIFIANT_KEY = 'apc_identifiant';
+        const NOM_KEY = 'apc_nom';
+        
+        // Éléments DOM
         const PROTECTED_SECTION = document.getElementById('protectedSection');
         const COMMANDE_SECTION = document.getElementById('commande');
         const MATIERES_GRID = document.getElementById('matieresGrid');
         const COUNTDOWN_SPAN = document.getElementById('countdown');
         const EXPIRATION_DATE_SPAN = document.getElementById('expirationDate');
         const CV_ACCESS_CONTAINER = document.getElementById('cvAccessContainer');
+        const ALERT_MESSAGE = document.getElementById('alertMessage');
+        const ERROR_MESSAGE = document.getElementById('errorMessage');
 
         // Vérifier si un compte est actif et non expiré
         function checkAccountStatus() {
@@ -482,14 +501,22 @@
                     return true;
                 } else {
                     // Compte expiré
-                    localStorage.removeItem(STORAGE_KEY);
-                    localStorage.removeItem(EXPIRATION_KEY);
+                    clearAccount();
                     showExpiredMessage();
                 }
+            } else {
+                // Pas de compte actif
+                showOrderForm();
             }
-            // Pas de compte actif
-            showOrderForm();
             return false;
+        }
+
+        function clearAccount() {
+            localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem(EXPIRATION_KEY);
+            localStorage.removeItem(CODE_KEY);
+            localStorage.removeItem(IDENTIFIANT_KEY);
+            localStorage.removeItem(NOM_KEY);
         }
 
         function showProtectedContent(expTime) {
@@ -520,8 +547,7 @@
             
             if (diff <= 0) {
                 // Expiré
-                localStorage.removeItem(STORAGE_KEY);
-                localStorage.removeItem(EXPIRATION_KEY);
+                clearAccount();
                 showOrderForm();
                 window.location.reload(); // Recharger pour afficher le formulaire
                 return;
@@ -539,14 +565,23 @@
             PROTECTED_SECTION.style.display = 'none';
             COMMANDE_SECTION.style.display = 'block';
             MATIERES_GRID.style.display = 'grid';
+            
+            // Vérifier si un code a été généré récemment
+            const code = sessionStorage.getItem('temp_code');
+            if (code) {
+                CV_ACCESS_CONTAINER.style.display = 'block';
+                document.getElementById('codeGenere').innerHTML = `🔐 <strong>${code}</strong>`;
+                document.getElementById('identifiantGenere').innerHTML = `🆔 Identifiant : <strong>${sessionStorage.getItem('temp_identifiant')}</strong>`;
+            }
         }
 
         function showExpiredMessage() {
             showOrderForm();
-            const alertDiv = document.getElementById('alertMessage');
-            alertDiv.style.display = 'block';
-            alertDiv.style.background = 'var(--rouge)';
-            alertDiv.innerHTML = '⏰ Votre accès de 7 jours a expiré. Veuillez commander un nouveau compte.';
+            ERROR_MESSAGE.style.display = 'block';
+            ERROR_MESSAGE.innerHTML = '⏰ Votre accès de 7 jours a expiré. Veuillez commander un nouveau compte.';
+            setTimeout(() => {
+                ERROR_MESSAGE.style.display = 'none';
+            }, 5000);
         }
 
         // Génération aléatoire d'un code à 8 caractères
@@ -568,10 +603,7 @@
 
         // Fonction d'envoi WhatsApp
         function envoyerWhatsApp(code, identifiant, nom, tel, inspection, region) {
-            // Numéro du développeur
             const numero = '22892871605';
-            
-            // Construction du message
             const message = `🔐 *NOUVEAU COMPTE GÉNÉRÉ* 🔐%0A%0A` +
                            `👤 *Nom :* ${nom}%0A` +
                            `📞 *Téléphone :* ${tel}%0A` +
@@ -582,12 +614,38 @@
                            `💰 *Montant :* 500 FCFA (Mobile Money Mixx)%0A%0A` +
                            `✅ Envoyé automatiquement depuis l'application APC Sciences Togo.`;
             
-            // Créer l'URL WhatsApp
-            const url = `https://wa.me/${numero}?text=${message}`;
-            
-            // Ouvrir dans un nouvel onglet
-            window.open(url, '_blank');
+            window.open(`https://wa.me/${numero}?text=${message}`, '_blank');
         }
+
+        // Activer le compte (simulation du développeur après réception du paiement)
+        window.activerCompte = function() {
+            const code = sessionStorage.getItem('temp_code');
+            const identifiant = sessionStorage.getItem('temp_identifiant');
+            const nom = sessionStorage.getItem('temp_nom');
+            
+            if (!code || !identifiant || !nom) {
+                alert('Aucun code trouvé. Veuillez d\'abord générer un code.');
+                return;
+            }
+            
+            const maintenant = new Date().getTime();
+            const expiration = maintenant + (7 * 24 * 60 * 60 * 1000); // +7 jours
+            
+            // Sauvegarder les informations du compte
+            localStorage.setItem(STORAGE_KEY, 'true');
+            localStorage.setItem(EXPIRATION_KEY, expiration.toString());
+            localStorage.setItem(CODE_KEY, code);
+            localStorage.setItem(IDENTIFIANT_KEY, identifiant);
+            localStorage.setItem(NOM_KEY, nom);
+            
+            // Nettoyer les données temporaires
+            sessionStorage.removeItem('temp_code');
+            sessionStorage.removeItem('temp_identifiant');
+            sessionStorage.removeItem('temp_nom');
+            
+            alert('✅ Compte activé avec succès pour 7 jours !');
+            window.location.reload();
+        };
 
         // Bouton générer et envoyer
         document.getElementById('btnGenerer').addEventListener('click', function() {
@@ -597,7 +655,11 @@
             const region = document.getElementById('region').value;
 
             if (!nom || !tel || !inspection || !region) {
-                alert('Veuillez remplir tous les champs du formulaire.');
+                ERROR_MESSAGE.style.display = 'block';
+                ERROR_MESSAGE.innerHTML = '❌ Veuillez remplir tous les champs du formulaire.';
+                setTimeout(() => {
+                    ERROR_MESSAGE.style.display = 'none';
+                }, 3000);
                 return;
             }
 
@@ -612,51 +674,68 @@
             // Envoi par WhatsApp
             envoyerWhatsApp(code, identifiant, nom, tel, inspection, region);
 
+            // Stocker temporairement
+            sessionStorage.setItem('temp_code', code);
+            sessionStorage.setItem('temp_identifiant', identifiant);
+            sessionStorage.setItem('temp_nom', nom);
+
             // Afficher le bouton d'accès à CV.html
             CV_ACCESS_CONTAINER.style.display = 'block';
 
             // Message de confirmation
-            const alertDiv = document.getElementById('alertMessage');
-            alertDiv.style.display = 'block';
-            alertDiv.style.background = '#006b3f';
-            alertDiv.innerHTML = `✅ Code généré et envoyé par WhatsApp !<br>Code : ${code}<br>Identifiant : ${identifiant}<br><br>⏳ Cliquez sur le bouton ci-dessous pour accéder à votre CV.`;
-
-            // Stocker temporairement les informations pour l'activation
-            sessionStorage.setItem('temp_code', code);
-            sessionStorage.setItem('temp_identifiant', identifiant);
-            sessionStorage.setItem('temp_nom', nom);
+            ALERT_MESSAGE.style.display = 'block';
+            ALERT_MESSAGE.innerHTML = `✅ Code généré et envoyé par WhatsApp !<br>Code : ${code}<br>Identifiant : ${identifiant}<br><br>⏳ En attente de confirmation du paiement.`;
+            
+            // Simulation : après 5 secondes, proposer d'activer (pour la démo)
+            setTimeout(() => {
+                if (confirm('💰 Paiement reçu ? Cliquez sur OK pour activer votre compte (simulation)')) {
+                    window.activerCompte();
+                }
+            }, 5000);
         });
+
+        // Fonction pour accéder à CV.html
+        function accederCV() {
+            // Vérifier si le compte est actif
+            const actif = localStorage.getItem(STORAGE_KEY) === 'true';
+            const expiration = localStorage.getItem(EXPIRATION_KEY);
+            
+            if (actif && expiration) {
+                const now = new Date().getTime();
+                if (now < parseInt(expiration)) {
+                    // Compte actif, accès autorisé
+                    window.location.href = 'CV.html';
+                    return;
+                }
+            }
+            
+            // Vérifier si un code temporaire existe (accès après génération mais avant activation)
+            const tempCode = sessionStorage.getItem('temp_code');
+            if (tempCode) {
+                // Accès temporaire pour tester CV.html
+                window.location.href = 'CV.html';
+                return;
+            }
+            
+            // Pas d'accès
+            ERROR_MESSAGE.style.display = 'block';
+            ERROR_MESSAGE.innerHTML = '❌ Accès non autorisé. Veuillez générer un code et activer votre compte.';
+            setTimeout(() => {
+                ERROR_MESSAGE.style.display = 'none';
+            }, 3000);
+        }
 
         // Bouton pour accéder à CV.html (depuis le formulaire)
-        document.getElementById('btnAccesCV').addEventListener('click', function() {
-            window.location.href = 'CV.html';
-        });
+        document.getElementById('btnAccesCV').addEventListener('click', accederCV);
 
         // Bouton pour accéder à CV.html (depuis la section protégée)
-        document.getElementById('btnAccederCV2').addEventListener('click', function() {
-            window.location.href = 'CV.html';
-        });
+        document.getElementById('btnAccederCV2').addEventListener('click', accederCV);
 
         // Bouton pour demander un nouveau compte (depuis la section protégée)
         document.getElementById('btnNouveauCompte').addEventListener('click', function() {
-            // Désactiver le compte actuel
-            localStorage.removeItem(STORAGE_KEY);
-            localStorage.removeItem(EXPIRATION_KEY);
-            window.location.reload(); // Recharger pour afficher le formulaire
-        });
-
-        // Simulation d'activation (dans un cas réel, ce serait fait par le développeur après réception du paiement)
-        // Pour la démo, on ajoute une fonction accessible via console
-        window.activerCompte = function() {
-            const maintenant = new Date().getTime();
-            const expiration = maintenant + (7 * 24 * 60 * 60 * 1000); // +7 jours
-            
-            localStorage.setItem(STORAGE_KEY, 'true');
-            localStorage.setItem(EXPIRATION_KEY, expiration.toString());
-            
-            alert('✅ Compte activé avec succès pour 7 jours !');
+            clearAccount();
             window.location.reload();
-        };
+        });
 
         // Vérifier le statut au chargement
         document.addEventListener('DOMContentLoaded', function() {
