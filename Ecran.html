@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>APC Sciences · Togo | Accès 7 jours avec expiration</title>
+    <title>APC Sciences · Togo | Compte 7j avec envoi WhatsApp</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts Inter -->
@@ -271,7 +271,7 @@
                 <i class="fas fa-key" style="color:var(--jaune);"></i> 
                 <span>Commander votre accès 7 jours · 500 FCFA</span>
             </div>
-            <p style="margin-bottom:20px;">Remplissez ce formulaire. Un code d'accès personnel sera généré automatiquement. Effectuez le paiement par Mobile Money (Mixx) au <strong>+228 92 87 16 05</strong> et envoyez le code reçu par WhatsApp au même numéro pour activer votre compte.</p>
+            <p style="margin-bottom:20px;">Remplissez ce formulaire. Un code d'accès personnel sera généré automatiquement. Effectuez le paiement par Mobile Money (Mixx) au <strong>+228 92 87 16 05</strong>.</p>
 
             <form id="orderForm">
                 <div class="form-row">
@@ -314,12 +314,12 @@
 
                 <div class="payment-info">
                     <p><strong>💰 Paiement :</strong> 500 FCFA par Mobile Money (Mixx) au <strong>+228 92 87 16 05</strong></p>
-                    <p><strong>📲 Envoyez le code généré ci-dessous par WhatsApp au même numéro.</strong></p>
+                    <p><strong>🤖 Le code sera automatiquement envoyé par WhatsApp après génération.</strong></p>
                 </div>
 
                 <!-- Zone d'affichage du code généré automatiquement -->
                 <div class="code-genere" id="codeGenere">
-                    ⚡ Votre code apparaîtra ici après validation
+                    ⚡ Votre code apparaîtra ici après génération
                 </div>
 
                 <!-- Identifiant associé -->
@@ -327,8 +327,7 @@
                     🆔 Identifiant : enseignant_...
                 </div>
 
-                <button type="button" class="btn-submit" id="btnGenerer"><i class="fas fa-magic"></i> Générer mon code d'accès</button>
-                <button type="button" class="btn-submit" id="btnActiver" style="background:var(--rouge); margin-top:15px;"><i class="fas fa-check-circle"></i> Activer mon compte (simulation)</button>
+                <button type="button" class="btn-submit" id="btnGenerer"><i class="fas fa-magic"></i> Générer et envoyer par WhatsApp</button>
             </form>
 
             <div class="alert" id="alertMessage"></div>
@@ -358,7 +357,8 @@
                 </div>
             </div>
             <div style="margin-top:30px; text-align:center;">
-                <button class="btn btn-rouge" id="btnNouveauCompte" style="font-size:1.2rem;">🔄 Demander un nouveau compte</button>
+                <button class="btn btn-rouge" id="btnAccederCV" style="font-size:1.2rem;">📄 Accéder à CV.html</button>
+                <button class="btn btn-jaune" id="btnNouveauCompte" style="font-size:1.2rem; margin-left:10px;">🔄 Nouveau compte</button>
             </div>
         </div>
 
@@ -492,11 +492,30 @@
             return `tg_${base}_${chiffres}`;
         }
 
-        // Variables pour le dernier code généré
-        let dernierCode = '';
-        let dernierIdentifiant = '';
+        // Fonction d'envoi WhatsApp
+        function envoyerWhatsApp(code, identifiant, nom, tel, inspection, region) {
+            // Numéro du développeur
+            const numero = '22892871605';
+            
+            // Construction du message
+            const message = `🔐 *NOUVEAU COMPTE GÉNÉRÉ* 🔐%0A%0A` +
+                           `👤 *Nom :* ${nom}%0A` +
+                           `📞 *Téléphone :* ${tel}%0A` +
+                           `🏫 *Inspection :* ${inspection}%0A` +
+                           `🌍 *Région :* ${region}%0A%0A` +
+                           `🆔 *Identifiant :* ${identifiant}%0A` +
+                           `🔑 *Code d'accès :* ${code}%0A%0A` +
+                           `💰 *Montant :* 500 FCFA (Mobile Money Mixx)%0A%0A` +
+                           `✅ Envoyé automatiquement depuis l'application APC Sciences Togo.`;
+            
+            // Créer l'URL WhatsApp
+            const url = `https://wa.me/${numero}?text=${message}`;
+            
+            // Ouvrir dans un nouvel onglet
+            window.open(url, '_blank');
+        }
 
-        // Bouton générer
+        // Bouton générer et envoyer
         document.getElementById('btnGenerer').addEventListener('click', function() {
             const nom = document.getElementById('nom').value.trim();
             const tel = document.getElementById('tel').value.trim();
@@ -508,38 +527,32 @@
                 return;
             }
 
-            dernierCode = genererCode();
-            dernierIdentifiant = genererIdentifiant(nom, tel);
+            // Génération du code et identifiant
+            const code = genererCode();
+            const identifiant = genererIdentifiant(nom, tel);
 
-            document.getElementById('codeGenere').innerHTML = `🔐 <strong>${dernierCode}</strong>`;
-            document.getElementById('identifiantGenere').innerHTML = `🆔 Identifiant : <strong>${dernierIdentifiant}</strong>`;
+            // Affichage
+            document.getElementById('codeGenere').innerHTML = `🔐 <strong>${code}</strong>`;
+            document.getElementById('identifiantGenere').innerHTML = `🆔 Identifiant : <strong>${identifiant}</strong>`;
 
+            // Envoi par WhatsApp
+            envoyerWhatsApp(code, identifiant, nom, tel, inspection, region);
+
+            // Message de confirmation
             const alertDiv = document.getElementById('alertMessage');
             alertDiv.style.display = 'block';
             alertDiv.style.background = '#006b3f';
-            alertDiv.innerHTML = `✅ Code généré : ${dernierCode}<br>📲 Envoyez ce code par WhatsApp au +228 92 87 16 05 après paiement Mobile Money (500 FCFA).`;
+            alertDiv.innerHTML = `✅ Code généré et envoyé par WhatsApp !<br>Code : ${code}<br>Identifiant : ${identifiant}<br><br>⏳ Après confirmation du paiement, votre compte sera activé.`;
+
+            // Stocker temporairement les informations pour l'activation
+            sessionStorage.setItem('temp_code', code);
+            sessionStorage.setItem('temp_identifiant', identifiant);
+            sessionStorage.setItem('temp_nom', nom);
         });
 
-        // Bouton activer (simulation)
-        document.getElementById('btnActiver').addEventListener('click', function() {
-            if (!dernierCode || !dernierIdentifiant) {
-                alert('Veuillez d\'abord générer un code avec le formulaire.');
-                return;
-            }
-
-            const confirmation = confirm(`Simulation d'activation\nCode : ${dernierCode}\nIdentifiant : ${dernierIdentifiant}\n\nCliquez sur OK pour simuler l'activation du compte (7 jours).`);
-
-            if (confirmation) {
-                // Activer le compte pour 7 jours
-                const maintenant = new Date().getTime();
-                const expiration = maintenant + (7 * 24 * 60 * 60 * 1000); // +7 jours
-                
-                localStorage.setItem(STORAGE_KEY, 'true');
-                localStorage.setItem(EXPIRATION_KEY, expiration.toString());
-                
-                alert('✅ Compte activé avec succès pour 7 jours !');
-                window.location.reload(); // Recharger pour afficher le contenu protégé
-            }
+        // Bouton pour accéder à CV.html
+        document.getElementById('btnAccederCV').addEventListener('click', function() {
+            window.location.href = 'CV.html';
         });
 
         // Bouton pour demander un nouveau compte (depuis la section protégée)
@@ -549,6 +562,19 @@
             localStorage.removeItem(EXPIRATION_KEY);
             window.location.reload(); // Recharger pour afficher le formulaire
         });
+
+        // Simulation d'activation (dans un cas réel, ce serait fait par le développeur après réception du paiement)
+        // Pour la démo, on ajoute un bouton caché accessible via console
+        window.activerCompte = function() {
+            const maintenant = new Date().getTime();
+            const expiration = maintenant + (7 * 24 * 60 * 60 * 1000); // +7 jours
+            
+            localStorage.setItem(STORAGE_KEY, 'true');
+            localStorage.setItem(EXPIRATION_KEY, expiration.toString());
+            
+            alert('✅ Compte activé avec succès pour 7 jours !');
+            window.location.reload();
+        };
 
         // Vérifier le statut au chargement
         document.addEventListener('DOMContentLoaded', function() {
@@ -572,6 +598,9 @@
                 }
             });
         });
+
+        // Activation automatique pour la démo (à commenter en production)
+        // setTimeout(() => { activerCompte(); }, 5000);
     </script>
 </body>
 </html>
