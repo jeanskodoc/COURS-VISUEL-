@@ -621,43 +621,258 @@
             }
         }
 
-        /* Contrôles plein écran flottants responsifs */
-        .fullscreen-controls {
+        /* Overlay nom fichier en plein écran */
+        .fs-file-overlay {
             display: none;
             position: fixed;
-            bottom: clamp(10px, 4vw, 20px);
-            right: clamp(10px, 4vw, 20px);
-            z-index: 1000;
-            gap: clamp(5px, 2vw, 10px);
-            flex-wrap: wrap;
-            justify-content: flex-end;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 99999;
+            background: linear-gradient(180deg, rgba(0,0,0,.8), rgba(0,0,0,.25) 70%, transparent);
+            color: white;
+            padding: 16px 24px 32px;
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            pointer-events: none;
+            text-shadow: 0 2px 10px rgba(0,0,0,.6);
+            transition: opacity .4s;
         }
+        body.fullscreen-mode .fs-file-overlay {
+            display: block;
+        }
+        .fs-file-overlay .fs-file-sub {
+            display: block;
+            font-size: 14px;
+            font-weight: 400;
+            opacity: .8;
+            margin-top: 4px;
+        }
+        .fs-file-overlay.proj-hide { opacity: 0; }
 
-        body.fullscreen-mode .fullscreen-controls {
+        /* Barre de contrôle plein écran en bas */
+        .fs-bottom-bar {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 99999;
+            background: linear-gradient(0deg, rgba(0,0,0,.85), rgba(0,0,0,.45) 60%, transparent);
+            padding: 14px 20px 18px;
+            transition: opacity .4s;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 12px;
+        }
+        body.fullscreen-mode .fs-bottom-bar {
             display: flex;
         }
-
-        .fullscreen-controls .math-btn {
-            padding: clamp(10px, 3vw, 15px) clamp(15px, 4vw, 25px);
-            font-size: clamp(0.9rem, 3vw, 1.1em);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            background: rgba(52, 152, 219, 0.9);
+        .fs-bottom-bar.proj-hide { opacity: 0; pointer-events: none; }
+        .fs-bottom-left {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
         }
+        .fs-bottom-left .fs-label {
+            font-size: 11px;
+            color: rgba(255,255,255,.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .fs-bottom-left .fs-filename {
+            font-size: 15px;
+            color: white;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 50vw;
+        }
+        .fs-bottom-right {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .fs-bottom-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background .2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,.15);
+            color: white;
+        }
+        .fs-bottom-btn:hover { background: rgba(255,255,255,.3); }
+        .fs-bottom-btn.exit {
+            background: #e67e22;
+        }
+        .fs-bottom-btn.exit:hover { background: #d35400; }
+        .fs-bottom-btn .fs-icon { font-size: 18px; }
 
         @media (max-width: 480px) {
-            .fullscreen-controls {
-                bottom: 5px;
-                right: 5px;
-                left: 5px;
-                justify-content: center;
-            }
-            
-            .fullscreen-controls .math-btn {
-                flex: 1;
-                padding: 10px;
-            }
+            .fs-bottom-bar { flex-direction: column; align-items: stretch; padding: 10px 12px 14px; }
+            .fs-bottom-left .fs-filename { max-width: 100%; }
+            .fs-bottom-right { justify-content: flex-end; }
+            .fs-bottom-btn span { display: none; }
+            .fs-bottom-btn { padding: 10px; }
         }
+
+        /* Champ URL */
+        .url-input-wrapper {
+            display: flex;
+            gap: 8px;
+            flex: 2;
+            min-width: min(100%, 280px);
+            align-items: center;
+        }
+        .url-input-wrapper input {
+            flex: 1;
+            padding: clamp(8px, 2vw, 12px) clamp(12px, 2vw, 16px);
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            font-size: var(--text-size);
+            outline: none;
+            transition: border-color .2s;
+            min-width: 0;
+        }
+        .url-input-wrapper input:focus { border-color: var(--math-blue); }
+        .url-input-wrapper .math-btn { flex-shrink: 0; }
+        body.fullscreen-mode .url-input-wrapper { display: none; }
+
+        @media (max-width: 600px) {
+            .url-input-wrapper { flex-wrap: wrap; }
+            .url-input-wrapper input { width: 100%; }
+        }
+
+        /* Barre de simulation responsive */
+        .device-bar {
+            display: flex;
+            gap: 6px;
+            padding: 8px 0;
+            align-items: center;
+        }
+        body.fullscreen-mode .device-bar { display: none; }
+        .device-bar .dev-label {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 600;
+            margin-right: 4px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+        .dev-btn {
+            padding: 5px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all .2s;
+            color: var(--text-dark);
+        }
+        .dev-btn:hover { border-color: var(--math-blue); color: var(--math-blue); }
+        .dev-btn.active { border-color: var(--math-blue); background: var(--math-blue); color: white; }
+
+        .preview-frame.device-mode {
+            margin: 0 auto;
+            transition: max-width .3s ease;
+        }
+
+        /* Recherche dans le code */
+        .code-search {
+            display: none;
+            padding: 8px 15px;
+            background: #252525;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #333;
+        }
+        .code-search.visible { display: flex; }
+        .code-search input {
+            flex: 1;
+            padding: 6px 12px;
+            background: #1e1e1e;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #d4d4d4;
+            font-size: 13px;
+            outline: none;
+        }
+        .code-search input:focus { border-color: var(--math-blue); }
+        .code-search .search-count {
+            font-size: 12px;
+            color: #888;
+            white-space: nowrap;
+        }
+        .code-search .search-nav {
+            display: flex;
+            gap: 4px;
+        }
+        .code-search .search-nav button {
+            padding: 4px 10px;
+            background: #3d3d3d;
+            border: none;
+            border-radius: 4px;
+            color: #ccc;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .code-search .search-nav button:hover { background: #4d4d4d; }
+        .code-search .search-close {
+            padding: 4px 8px;
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .code-search .search-close:hover { color: white; }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: rgba(44,62,80,.95);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            z-index: 999999;
+            opacity: 0;
+            transition: all .4s ease;
+            pointer-events: none;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 30px rgba(0,0,0,.3);
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast .toast-action {
+            margin-left: 16px;
+            padding: 6px 16px;
+            background: var(--math-blue);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+        .toast .toast-action:hover { background: #2980b9; }
 
         /* Messages responsifs */
         .info-message {
@@ -820,6 +1035,13 @@
                         <i>🗑️</i><span>Effacer</span>
                     </button>
                 </div>
+                
+                <div class="url-input-wrapper">
+                    <input type="text" id="urlInput" placeholder="Entrer une URL…" />
+                    <button class="math-btn primary" id="loadUrlBtn" title="Charger l'URL">
+                        <i>🌐</i><span>Charger</span>
+                    </button>
+                </div>
             </div>
 
             <!-- Barre d'information fichier -->
@@ -858,7 +1080,13 @@
 
                 <!-- Onglet Aperçu -->
                 <div class="tab-content active" id="previewTab">
-                    <div class="preview-frame">
+                    <div class="device-bar">
+                        <span class="dev-label">📱</span>
+                        <button class="dev-btn active" data-width="100" title="Ordinateur">💻</button>
+                        <button class="dev-btn" data-width="768" title="Tablette (768px)">📱768</button>
+                        <button class="dev-btn" data-width="375" title="Mobile (375px)">📱375</button>
+                    </div>
+                    <div class="preview-frame" id="previewFrame">
                         <iframe id="livePreview" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals" title="Aperçu HTML"></iframe>
                     </div>
                 </div>
@@ -872,6 +1100,9 @@
                                 <span>Code source</span>
                             </h3>
                             <div class="code-actions">
+                                <button id="searchCodeBtn" disabled title="Rechercher (Ctrl+F)">
+                                    <i>🔍</i><span>Rechercher</span>
+                                </button>
                                 <button id="copyCodeBtn" disabled title="Copier">
                                     <i>📋</i><span>Copier</span>
                                 </button>
@@ -879,6 +1110,15 @@
                                     <i>✨</i><span>Formater</span>
                                 </button>
                             </div>
+                        </div>
+                        <div class="code-search" id="codeSearch">
+                            <input type="text" id="searchInput" placeholder="Rechercher dans le code…" />
+                            <span class="search-count" id="searchCount"></span>
+                            <div class="search-nav">
+                                <button id="searchPrev" title="Précédent">▲</button>
+                                <button id="searchNext" title="Suivant">▼</button>
+                            </div>
+                            <button class="search-close" id="searchClose">✕</button>
                         </div>
                         <textarea id="fileContent" spellcheck="false" placeholder="Sélectionnez un fichier HTML..." readonly></textarea>
                     </div>
@@ -906,15 +1146,26 @@
         </footer>
     </div>
 
-    <!-- Contrôles plein écran flottants -->
-    <div class="fullscreen-controls">
-        <button class="math-btn exit-fullscreen" id="exitFullscreenBtn" style="display: none;">
-            <i>⛶</i><span>Quitter</span>
-        </button>
-        <button class="math-btn primary" id="fullscreenRefreshBtn" style="display: none;">
-            <i>🔄</i><span>Rafraîchir</span>
-        </button>
+    <!-- Overlay nom fichier en plein écran -->
+    <div class="fs-file-overlay" id="fsFileOverlay">
+        <span id="fsOverlayTitle">Visualiseur Universel</span>
+        <span class="fs-file-sub" id="fsOverlaySub"></span>
     </div>
+
+    <!-- Barre de contrôle plein écran en bas -->
+    <div class="fs-bottom-bar" id="fsBottomBar">
+        <div class="fs-bottom-left">
+            <span class="fs-label">Fichier</span>
+            <span class="fs-filename" id="fsFilename">Aucun fichier</span>
+        </div>
+        <div class="fs-bottom-right">
+            <button class="fs-bottom-btn" onclick="fsRefresh()" title="Rafraîchir (F5)"><span class="fs-icon">🔄</span><span>Rafraîchir</span></button>
+            <button class="fs-bottom-btn exit" onclick="exitFullscreen()" title="Quitter (Échap)"><span class="fs-icon">⛶</span><span>Quitter</span></button>
+        </div>
+    </div>
+
+    <!-- Toast de notification -->
+    <div class="toast" id="toast"></div>
 
     <script>
         // Générer les symboles mathématiques en arrière-plan
@@ -942,8 +1193,6 @@
         const refreshBtn = document.getElementById('refreshBtn');
         const clearBtn = document.getElementById('clearBtn');
         const fullscreenBtn = document.getElementById('fullscreenBtn');
-        const exitFullscreenBtn = document.getElementById('exitFullscreenBtn');
-        const fullscreenRefreshBtn = document.getElementById('fullscreenRefreshBtn');
         const copyCodeBtn = document.getElementById('copyCodeBtn');
         const formatCodeBtn = document.getElementById('formatCodeBtn');
         
@@ -957,6 +1206,24 @@
         const fileInfoSize = document.getElementById('fileInfoSize');
         const fileInfoDate = document.getElementById('fileInfoDate');
         const fileInfoLines = document.getElementById('fileInfoLines');
+        
+        const fsOverlayTitle = document.getElementById('fsOverlayTitle');
+        const fsOverlaySub = document.getElementById('fsOverlaySub');
+        const fsFilename = document.getElementById('fsFilename');
+        const fsBottomBar = document.getElementById('fsBottomBar');
+        const fsFileOverlay = document.getElementById('fsFileOverlay');
+        
+        const urlInput = document.getElementById('urlInput');
+        const loadUrlBtn = document.getElementById('loadUrlBtn');
+        const previewFrame = document.getElementById('previewFrame');
+        const searchCodeBtn = document.getElementById('searchCodeBtn');
+        const codeSearch = document.getElementById('codeSearch');
+        const searchInput = document.getElementById('searchInput');
+        const searchCount = document.getElementById('searchCount');
+        const searchPrev = document.getElementById('searchPrev');
+        const searchNext = document.getElementById('searchNext');
+        const searchClose = document.getElementById('searchClose');
+        const toast = document.getElementById('toast');
 
         // État
         let currentFileContent = '';
@@ -964,6 +1231,11 @@
         let currentFileDate = '';
         let isFullscreen = false;
         let currentTab = 'preview';
+        let fsHideTimer = null;
+        let currentUrl = '';
+        let contentSource = 'file'; // 'file' | 'url'
+        let searchMatches = [];
+        let searchIndex = -1;
 
         // Initialisation
         createMathBackground();
@@ -973,6 +1245,157 @@
             const background = document.getElementById('mathBackground');
             background.innerHTML = '';
             createMathBackground();
+        });
+
+        // ─── Toast ──────────────────────────────────────────────
+        function showToast(msg, duration, action) {
+            toast.textContent = msg;
+            if (action) {
+                const btn = document.createElement('button');
+                btn.className = 'toast-action';
+                btn.textContent = action.label;
+                btn.onclick = action.cb;
+                toast.appendChild(btn);
+            }
+            toast.classList.add('show');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => toast.classList.remove('show'), duration || 4000);
+        }
+
+        // ─── Device toolbar ─────────────────────────────────────
+        document.querySelectorAll('.dev-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.dev-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const w = btn.dataset.width;
+                if (w === '100') {
+                    previewFrame.classList.remove('device-mode');
+                    previewFrame.style.maxWidth = '';
+                } else {
+                    previewFrame.classList.add('device-mode');
+                    previewFrame.style.maxWidth = w + 'px';
+                }
+            });
+        });
+
+        // ─── URL Loader ─────────────────────────────────────────
+        function loadURL(url) {
+            if (!url) return;
+            if (!url.match(/^https?:\/\//i)) url = 'https://' + url;
+            contentSource = 'url';
+            currentUrl = url;
+            currentFileContent = '';
+            currentFileName = url;
+            currentFileDate = '';
+            fileNameDisplay.textContent = url.length > 35 ? url.substring(0, 32) + '…' : url;
+            fileContent.value = 'Chargement de l\'URL…';
+            fileInfoBar.style.display = 'flex';
+            fileInfoName.textContent = url;
+            fileInfoSize.textContent = '—';
+            fileInfoDate.textContent = 'Web';
+            fileInfoLines.textContent = '—';
+            enableButtons(true);
+            updateFsUI();
+            try {
+                livePreview.srcdoc = '';
+                livePreview.src = url;
+                splitPreview.srcdoc = '';
+                splitPreview.src = url;
+            } catch(e) {
+                livePreview.srcdoc = `<html><body style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:Arial;color:#e74c3c;text-align:center;padding:20px"><div>❌ Impossible de charger ${url}</div></body></html>`;
+            }
+        }
+
+        loadUrlBtn.addEventListener('click', () => {
+            const url = urlInput.value.trim();
+            if (url) { loadURL(url); showToast('🌐 Chargement de l\'URL…'); }
+        });
+        urlInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { loadUrlBtn.click(); }
+        });
+
+        // ─── Code Search (Ctrl+F) ─────────────────────────────
+        function doSearch(query) {
+            if (!query || !currentFileContent) {
+                searchMatches = [];
+                searchIndex = -1;
+                searchCount.textContent = '';
+                return;
+            }
+            const lines = currentFileContent.split('\n');
+            searchMatches = [];
+            lines.forEach((line, i) => {
+                if (line.toLowerCase().includes(query.toLowerCase())) searchMatches.push(i);
+            });
+            searchIndex = searchMatches.length > 0 ? 0 : -1;
+            updateSearchUI();
+            if (searchMatches.length > 0) scrollToSearch();
+        }
+
+        function updateSearchUI() {
+            if (searchMatches.length === 0) {
+                searchCount.textContent = 'Aucun résultat';
+            } else {
+                searchCount.textContent = `${searchIndex + 1}/${searchMatches.length}`;
+            }
+        }
+
+        function scrollToSearch() {
+            if (searchIndex < 0 || !currentFileContent) return;
+            const line = searchMatches[searchIndex];
+            const ta = fileContent;
+            const lines = currentFileContent.split('\n');
+            let pos = 0;
+            for (let i = 0; i < line; i++) { pos += lines[i].length + 1; }
+            ta.focus();
+            ta.setSelectionRange(pos, pos + lines[line].length);
+            ta.scrollTop = (line / lines.length) * ta.scrollHeight;
+        }
+
+        function openSearch() {
+            if (!currentFileContent) return;
+            codeSearch.classList.add('visible');
+            searchInput.value = '';
+            searchInput.focus();
+            doSearch('');
+        }
+        function closeSearch() {
+            codeSearch.classList.remove('visible');
+            searchMatches = [];
+            searchIndex = -1;
+        }
+
+        searchCodeBtn.addEventListener('click', openSearch);
+        searchClose.addEventListener('click', closeSearch);
+        searchInput.addEventListener('input', () => doSearch(searchInput.value));
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.shiftKey ? searchPrev.click() : searchNext.click();
+            }
+            if (e.key === 'Escape') closeSearch();
+        });
+        searchNext.addEventListener('click', () => {
+            if (searchMatches.length === 0) return;
+            searchIndex = (searchIndex + 1) % searchMatches.length;
+            updateSearchUI();
+            scrollToSearch();
+        });
+        searchPrev.addEventListener('click', () => {
+            if (searchMatches.length === 0) return;
+            searchIndex = (searchIndex - 1 + searchMatches.length) % searchMatches.length;
+            updateSearchUI();
+            scrollToSearch();
+        });
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'f' && currentFileContent) {
+                e.preventDefault();
+                const ct = document.querySelector('.tab.active');
+                if (ct && ct.dataset.tab === 'code') { openSearch(); }
+                else {
+                    document.querySelector('[data-tab="code"]').click();
+                    setTimeout(openSearch, 100);
+                }
+            }
         });
 
         // Gestion des onglets
@@ -986,9 +1409,13 @@
                 document.getElementById(tabId).classList.add('active');
                 currentTab = tab.dataset.tab;
                 
-                if (tab.dataset.tab === 'split' && currentFileContent) {
-                    updatePreview(splitPreview, currentFileContent);
-                    splitCode.value = currentFileContent;
+                if (tab.dataset.tab === 'split' && (currentFileContent || currentUrl)) {
+                    if (contentSource === 'url' && currentUrl) {
+                        splitPreview.src = currentUrl;
+                    } else if (currentFileContent) {
+                        updatePreview(splitPreview, currentFileContent);
+                    }
+                    splitCode.value = currentFileContent || '(source web non disponible)';
                 }
             });
         });
@@ -1024,7 +1451,9 @@
             
             reader.onload = function(e) {
                 try {
+                    contentSource = 'file';
                     currentFileContent = e.target.result;
+                    currentUrl = '';
                     
                     const lines = currentFileContent.split('\n').length;
                     fileInfoLines.textContent = lines + ' lignes';
@@ -1052,6 +1481,7 @@
 
         function updatePreview(iframe, content) {
             try {
+                iframe.src = '';
                 iframe.srcdoc = content;
             } catch (error) {
                 console.error('Erreur lors de la mise à jour de l\'aperçu:', error);
@@ -1074,6 +1504,8 @@
         }
 
         function showError(message) {
+            currentUrl = '';
+            contentSource = 'file';
             fileContent.value = 'Erreur : ' + message;
             livePreview.srcdoc = `<html><body style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial; color: #e74c3c; text-align: center; padding: 20px;"><div>❌ ${message}</div></body></html>`;
             splitPreview.srcdoc = livePreview.srcdoc;
@@ -1082,15 +1514,66 @@
         }
 
         function resetDisplay() {
+            currentFileContent = '';
+            currentUrl = '';
+            contentSource = 'file';
             fileContent.value = '';
             splitCode.value = '';
             const emptyMessage = '<html><body style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial; color: #999; text-align: center; padding: 20px;"><div>Sélectionnez un fichier HTML</div></body></html>';
             livePreview.srcdoc = emptyMessage;
+            livePreview.src = '';
             splitPreview.srcdoc = emptyMessage;
+            splitPreview.src = '';
             fileNameDisplay.textContent = 'Aucun fichier';
             fileInfoBar.style.display = 'none';
-            currentFileContent = '';
             enableButtons(false);
+        }
+
+        function updateFsUI() {
+            const name = currentFileName || 'Aucun fichier';
+            fsOverlayTitle.textContent = 'Visualiseur Universel';
+            fsOverlaySub.textContent = name;
+            fsFilename.textContent = name;
+        }
+
+        function showFsUI() {
+            fsFileOverlay.classList.remove('proj-hide');
+            fsBottomBar.classList.remove('proj-hide');
+        }
+        function hideFsUI() {
+            fsFileOverlay.classList.add('proj-hide');
+            fsBottomBar.classList.add('proj-hide');
+        }
+
+        function startFsAutoHide() {
+            showFsUI();
+            clearTimeout(fsHideTimer);
+            document.addEventListener('mousemove', onFsMouseMove);
+            document.addEventListener('touchstart', onFsTouch);
+        }
+        function stopFsAutoHide() {
+            document.removeEventListener('mousemove', onFsMouseMove);
+            document.removeEventListener('touchstart', onFsTouch);
+        }
+        function onFsMouseMove() {
+            showFsUI();
+            clearTimeout(fsHideTimer);
+            fsHideTimer = setTimeout(hideFsUI, 2500);
+        }
+        function onFsTouch() {
+            showFsUI();
+            clearTimeout(fsHideTimer);
+            fsHideTimer = setTimeout(hideFsUI, 4000);
+        }
+
+        function fsRefresh() {
+            if (contentSource === 'url' && currentUrl) {
+                livePreview.src = currentUrl;
+                splitPreview.src = currentUrl;
+            } else if (currentFileContent) {
+                updatePreview(livePreview, currentFileContent);
+                updatePreview(splitPreview, currentFileContent);
+            }
         }
 
         function enterFullscreen() {
@@ -1100,30 +1583,22 @@
                 isFullscreen = true;
                 
                 fullscreenBtn.style.display = 'none';
-                exitFullscreenBtn.style.display = 'flex';
-                fullscreenRefreshBtn.style.display = 'flex';
                 
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                 document.querySelector('[data-tab="preview"]').classList.add('active');
                 document.getElementById('previewTab').classList.add('active');
+                
+                updateFsUI();
+                startFsAutoHide();
             }
         }
 
         function exitFullscreen() {
             if (document.fullscreenElement) {
                 document.exitFullscreen();
-                document.body.classList.remove('fullscreen-mode');
-                isFullscreen = false;
-                
-                fullscreenBtn.style.display = 'flex';
-                exitFullscreenBtn.style.display = 'none';
-                fullscreenRefreshBtn.style.display = 'none';
-                
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                document.querySelector(`[data-tab="${currentTab}"]`).classList.add('active');
-                document.getElementById(currentTab + 'Tab').classList.add('active');
+                stopFsAutoHide();
+                showFsUI();
             }
         }
 
@@ -1131,49 +1606,32 @@
             if (!document.fullscreenElement) {
                 document.body.classList.remove('fullscreen-mode');
                 isFullscreen = false;
-                fullscreenBtn.style.display = 'flex';
-                exitFullscreenBtn.style.display = 'none';
-                fullscreenRefreshBtn.style.display = 'none';
+                fullscreenBtn.style.display = '';
+                
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                const tab = document.querySelector(`[data-tab="${currentTab}"]`);
+                if (tab) tab.classList.add('active');
+                const tabEl = document.getElementById(currentTab + 'Tab');
+                if (tabEl) tabEl.classList.add('active');
+                
+                stopFsAutoHide();
+                showFsUI();
             }
         });
 
         fullscreenBtn.addEventListener('click', enterFullscreen);
-        exitFullscreenBtn.addEventListener('click', exitFullscreen);
-
-        fullscreenRefreshBtn.addEventListener('click', function() {
-            if (currentFileContent) {
-                updatePreview(livePreview, currentFileContent);
-                updatePreview(splitPreview, currentFileContent);
-                
-                this.style.transform = 'rotate(180deg)';
-                setTimeout(() => {
-                    this.style.transform = 'rotate(0deg)';
-                }, 500);
-            }
-        });
 
         loadInPreviewBtn.addEventListener('click', function() {
-            if (currentFileContent) {
-                updatePreview(livePreview, currentFileContent);
-                updatePreview(splitPreview, currentFileContent);
-                
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 200);
-            }
+            if (currentFileContent || currentUrl) { fsRefresh(); }
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => { this.style.transform = 'scale(1)'; }, 200);
         });
 
         refreshBtn.addEventListener('click', function() {
-            if (currentFileContent) {
-                updatePreview(livePreview, currentFileContent);
-                updatePreview(splitPreview, currentFileContent);
-                
-                this.style.transform = 'rotate(180deg)';
-                setTimeout(() => {
-                    this.style.transform = 'rotate(0deg)';
-                }, 500);
-            }
+            fsRefresh();
+            this.style.transform = 'rotate(180deg)';
+            setTimeout(() => { this.style.transform = 'rotate(0deg)'; }, 500);
         });
 
         clearBtn.addEventListener('click', function() {
@@ -1189,6 +1647,12 @@
                     setTimeout(() => {
                         this.innerHTML = originalText;
                     }, 2000);
+                });
+            } else if (currentUrl) {
+                navigator.clipboard.writeText(currentUrl).then(() => {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i>✓</i><span>URL copiée !</span>';
+                    setTimeout(() => { this.innerHTML = originalText; }, 2000);
                 });
             }
         });
@@ -1230,30 +1694,47 @@
             if (currentFileContent) {
                 localStorage.setItem('lastHtmlContent', currentFileContent);
                 localStorage.setItem('lastFileName', currentFileName);
+                localStorage.setItem('lastSource', 'file');
+            } else if (currentUrl) {
+                localStorage.setItem('lastHtmlContent', currentUrl);
+                localStorage.setItem('lastFileName', currentFileName);
+                localStorage.setItem('lastSource', 'url');
             }
         });
 
         window.addEventListener('load', function() {
             const lastContent = localStorage.getItem('lastHtmlContent');
             const lastName = localStorage.getItem('lastFileName');
+            const lastSource = localStorage.getItem('lastSource');
             
             if (lastContent && lastName && window.innerWidth > 768) {
-                if (confirm('Voulez-vous restaurer le dernier fichier consulté ?')) {
-                    currentFileContent = lastContent;
-                    currentFileName = lastName;
-                    
-                    fileContent.value = lastContent;
-                    splitCode.value = lastContent;
-                    updatePreview(livePreview, lastContent);
-                    updatePreview(splitPreview, lastContent);
-                    
-                    fileNameDisplay.textContent = lastName.length > 30 ? lastName.substring(0, 27) + '...' : lastName;
-                    fileInfoName.textContent = lastName.length > 40 ? lastName.substring(0, 37) + '...' : lastName;
-                    fileInfoLines.textContent = lastContent.split('\n').length + ' lignes';
-                    fileInfoBar.style.display = 'flex';
-                    
-                    enableButtons(true);
-                }
+                setTimeout(() => {
+                    showToast('📄 Restaurer « ' + (lastName.length > 30 ? lastName.substring(0, 27) + '…' : lastName) + ' » ?', 10000, {
+                        label: 'Restaurer',
+                        cb: function() {
+                            if (lastSource === 'url') {
+                                loadURL(lastContent);
+                            } else {
+                                contentSource = 'file';
+                                currentFileContent = lastContent;
+                                currentFileName = lastName;
+                                
+                                fileContent.value = lastContent;
+                                splitCode.value = lastContent;
+                                updatePreview(livePreview, lastContent);
+                                updatePreview(splitPreview, lastContent);
+                                
+                                fileNameDisplay.textContent = lastName.length > 30 ? lastName.substring(0, 27) + '...' : lastName;
+                                fileInfoName.textContent = lastName.length > 40 ? lastName.substring(0, 37) + '...' : lastName;
+                                fileInfoLines.textContent = lastContent.split('\n').length + ' lignes';
+                                fileInfoBar.style.display = 'flex';
+                                enableButtons(true);
+                            }
+                            updateFsUI();
+                            showToast('✅ Restauré');
+                        }
+                    });
+                }, 500);
             }
         });
 
@@ -1269,6 +1750,68 @@
                 } else {
                     enterFullscreen();
                 }
+            }
+            
+            if (e.key === 'F5' && isFullscreen) {
+                e.preventDefault();
+                fsRefresh();
+            }
+        });
+
+        // Glisser-déposer de fichiers
+        const dropZone = document.querySelector('.math-card');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(evt => {
+            dropZone.addEventListener(evt, (e) => { e.preventDefault(); e.stopPropagation(); });
+        });
+        
+        ['dragenter', 'dragover'].forEach(evt => {
+            dropZone.addEventListener(evt, () => {
+                dropZone.style.borderColor = '#3498db';
+                dropZone.style.boxShadow = '0 0 0 3px rgba(52,152,219,.3)';
+            });
+        });
+        
+        ['dragleave', 'drop'].forEach(evt => {
+            dropZone.addEventListener(evt, () => {
+                dropZone.style.borderColor = '';
+                dropZone.style.boxShadow = '';
+            });
+        });
+        
+        dropZone.addEventListener('drop', (e) => {
+            const files = e.dataTransfer.files;
+            if (files.length && files[0].name.match(/\.(html|htm)$/i)) {
+                const file = files[0];
+                fileNameDisplay.textContent = file.name.length > 30 ? file.name.substring(0, 27) + '...' : file.name;
+                currentFileName = file.name;
+                currentFileDate = new Date(file.lastModified).toLocaleString();
+                fileInfoName.textContent = file.name.length > 40 ? file.name.substring(0, 37) + '...' : file.name;
+                fileInfoSize.textContent = formatFileSize(file.size);
+                fileInfoDate.textContent = currentFileDate;
+                fileContent.value = 'Chargement en cours...';
+                livePreview.srcdoc = '<html><body style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial; color: #666; text-align: center; padding: 20px;"><div>Chargement en cours...</div></body></html>';
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    try {
+                        contentSource = 'file';
+                        currentFileContent = ev.target.result;
+                        const lines = currentFileContent.split('\n').length;
+                        fileInfoLines.textContent = lines + ' lignes';
+                        fileContent.value = currentFileContent;
+                        splitCode.value = currentFileContent;
+                        updatePreview(livePreview, currentFileContent);
+                        updatePreview(splitPreview, currentFileContent);
+                        fileInfoBar.style.display = 'flex';
+                        enableButtons(true);
+                    } catch (err) {
+                        showError('Erreur lors de la lecture du fichier : ' + err.message);
+                    }
+                };
+                reader.onerror = function() { showError('Erreur lors de la lecture du fichier'); };
+                reader.readAsText(file);
+            } else if (files.length) {
+                showError('Veuillez déposer un fichier HTML (.html ou .htm)');
             }
         });
 
