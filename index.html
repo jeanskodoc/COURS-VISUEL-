@@ -1,638 +1,376 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Système Projeté Éducatif</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Système Projeté Éducatif · Collège & Lycée</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --green:#006a3f;
+  --yellow:#fdcb0a;
+  --red:#ce1127;
+}
+body{
+  min-height:100vh;
+  font-family:'Segoe UI',Arial,sans-serif;
+  color:#fff;
+  overflow-x:hidden;
+  background:#0f172a;
+}
+.bg-img{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:-2;object-fit:cover;
+  filter:brightness(0.85) contrast(1.05);
+}
 
-        body {
-            min-height: 100vh;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: transparent;
-            color: white;
-            position: relative;
-            overflow-x: hidden;
-        }
+/* ===== DRAPEAU TOGOLAIS CENTRÉ ===== */
+.flag-wrap{
+  position:relative;display:inline-block;
+  margin-bottom:8px;
+}
+.flag-wrap::before{
+  content:'';position:absolute;inset:-4px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--green),var(--yellow),var(--red));
+  z-index:-1;
+  animation:ringPulse 3s ease-in-out infinite;
+}
+@keyframes ringPulse{
+  0%,100%{opacity:0.5;transform:scale(1)}
+  50%{opacity:1;transform:scale(1.05)}
+}
+.flag-circle{
+  display:flex;flex-direction:column;
+  height:52px;width:52px;
+  border-radius:50%;overflow:hidden;
+  border:3px solid #fff;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  position:relative;
+}
+.flag-circle .s{flex:1;width:100%}
+.flag-circle .s:nth-child(odd){background:var(--green)}
+.flag-circle .s:nth-child(even){background:var(--yellow)}
+.flag-circle .canton{
+  position:absolute;top:0;left:0;
+  width:60%;height:calc(100% * 3/5);
+  background:var(--red);
+  display:flex;align-items:center;justify-content:center;
+}
+.flag-circle .canton .star{
+  color:#fff;font-size:16px;line-height:1;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,0.3));
+}
 
-        /* Image de fond Ecran.jpeg à 100% */
-        .background-image {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            object-fit: cover;
-            filter: brightness(0.9) contrast(1.05);
-        }
+/* ===== CONTENU PRINCIPAL ===== */
+.content{
+  position:relative;z-index:1;
+  text-align:center;padding:1rem .5rem;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+}
 
-        /* Overlay pour lisibilité */
-        .content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 1rem;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
+/* ===== OVERLAY PRINCIPAL ===== */
+.overlay{
+  background:rgba(0,0,0,0.25);
+  backdrop-filter:blur(10px);
+  border-radius:20px;
+  padding:1.5rem 1.2rem;
+  max-width:720px;
+  width:92%;
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 10px 40px rgba(0,0,0,.35);
+  animation:fadeUp .5s ease-out;
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.main-title{
+  font-size:1.6rem;font-weight:700;
+  text-shadow:2px 2px 8px rgba(0,0,0,.9);
+  margin-top:6px;
+}
+.subtitle{
+  font-size:.9rem;font-weight:500;
+  color:#ddd;
+  text-shadow:1px 1px 5px rgba(0,0,0,.9);
+}
+.sep{
+  width:60px;height:2px;
+  background:linear-gradient(90deg,#3498db,#2ecc71);
+  margin:.7rem auto;border-radius:1px;
+}
+.desc{
+  font-size:.85rem;max-width:520px;
+  margin:0 auto 1rem;line-height:1.5;
+  text-shadow:1px 1px 4px rgba(0,0,0,.9);
+  padding:0 .5rem;
+}
+.school-badge{
+  display:inline-block;
+  background:rgba(0,0,0,.4);
+  backdrop-filter:blur(4px);
+  padding:3px 14px;
+  border-radius:30px;
+  font-size:.72rem;font-weight:600;
+  border:1px solid rgba(255,255,255,.12);
+  margin-bottom:.8rem;
+}
 
-        /* Interface transparente */
-        .ui-overlay {
-            background: rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(8px);
-            border-radius: 15px;
-            padding: 2rem;
-            max-width: 800px;
-            width: 90%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
+/* ===== CARTES FONCTIONNALITÉS ===== */
+.features{
+  display:flex;flex-wrap:wrap;justify-content:center;
+  gap:.7rem;margin:1rem 0;max-width:620px;
+}
+.f-card{
+  background:rgba(0,0,0,.45);
+  border-radius:12px;padding:.9rem;
+  width:200px;
+  backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.08);
+  transition:all .25s ease;
+}
+.f-card:hover{
+  transform:translateY(-2px);
+  border-color:#3498db;
+  background:rgba(0,0,0,.55);
+}
+.f-icon{font-size:1.6rem;margin-bottom:.5rem;color:#3498db}
+.f-title{font-size:.95rem;margin-bottom:.5rem;color:#2ecc71}
+.f-list{list-style:none;text-align:left;font-size:.78rem}
+.f-list li{margin-bottom:.2rem;padding-left:.8rem;position:relative}
+.f-list li::before{content:"•";position:absolute;left:0;color:#f39c12}
 
-        /* Titre principal */
-        .main-title {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
-            font-weight: 700;
-            color: #fff;
-        }
+/* ===== BOUTONS COMPACTS ===== */
+.btns{
+  display:flex;flex-wrap:wrap;gap:.6rem;
+  justify-content:center;margin:1rem 0;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:5px;
+  background:linear-gradient(135deg,#3498db,#2ecc71);
+  color:#fff;text-decoration:none;
+  padding:6px 14px;border-radius:20px;
+  font-size:.78rem;font-weight:600;
+  border:none;cursor:pointer;
+  justify-content:center;
+  box-shadow:0 3px 8px rgba(0,0,0,.3);
+  transition:all .2s ease;
+  min-width:120px;
+}
+.btn.sec{background:linear-gradient(135deg,#9b59b6,#3498db)}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.btn i{font-size:.7rem}
 
-        .subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.9);
-            font-weight: 500;
-            color: #e0e0e0;
-        }
+/* ===== TAGS ===== */
+.tags{
+  display:flex;flex-wrap:wrap;justify-content:center;
+  gap:.4rem;margin:.8rem 0;max-width:460px;
+}
+.tag{
+  background:rgba(255,255,255,.07);
+  padding:3px 10px;border-radius:12px;
+  font-size:.68rem;
+  backdrop-filter:blur(4px);
+  border:1px solid rgba(255,255,255,.1);
+}
+.footer{
+  margin-top:1rem;
+  font-size:.68rem;color:rgba(255,255,255,.6);
+  text-shadow:1px 1px 3px rgba(0,0,0,.9);
+}
 
-        .separator {
-            width: 80px;
-            height: 2px;
-            background: linear-gradient(to right, #3498db, #2ecc71);
-            margin: 1rem auto;
-            border-radius: 1px;
-        }
+/* ===== INTERFACE SYSTÈME ===== */
+.sys{position:fixed;z-index:10;pointer-events:auto}
+.fs-btn{
+  top:12px;left:12px;
+  width:32px;height:32px;
+  background:rgba(0,0,0,.35);backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:50%;color:rgba(255,255,255,.85);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;cursor:pointer;transition:all .25s ease;
+  box-shadow:0 2px 6px rgba(0,0,0,.15);
+}
+.fs-btn:hover{background:rgba(0,0,0,.55);transform:scale(1.05)}
+.pres-mode{
+  top:12px;right:12px;
+  background:rgba(34,197,94,.12);
+  border:1px solid rgba(34,197,94,.2);
+  border-radius:50px;padding:4px 8px;
+  color:rgba(255,255,255,.85);
+  font-size:.6rem;font-weight:500;letter-spacing:.3px;
+  display:flex;align-items:center;gap:4px;
+}
+.pulse-dot{
+  width:4px;height:4px;
+  background:#4ade80;border-radius:50%;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:1}50%{opacity:.3}
+}
 
-        /* Description */
-        .description {
-            font-size: 1rem;
-            max-width: 600px;
-            margin: 0 auto 1.5rem;
-            line-height: 1.5;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
-            padding: 0 1rem;
-        }
-
-        /* Sections de fonctionnalités */
-        .features-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            margin: 1.5rem 0;
-            max-width: 700px;
-        }
-
-        .feature-card {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            padding: 1.2rem;
-            width: 220px;
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-3px);
-            border-color: #3498db;
-            background: rgba(0, 0, 0, 0.6);
-        }
-
-        .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 0.8rem;
-            color: #3498db;
-        }
-
-        .feature-title {
-            font-size: 1.1rem;
-            margin-bottom: 0.8rem;
-            color: #2ecc71;
-        }
-
-        .feature-list {
-            list-style: none;
-            text-align: left;
-            font-size: 0.85rem;
-        }
-
-        .feature-list li {
-            margin-bottom: 0.3rem;
-            padding-left: 1rem;
-            position: relative;
-        }
-
-        .feature-list li:before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: #f39c12;
-        }
-
-        /* Boutons REDUITS */
-        .buttons-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            justify-content: center;
-            margin: 1.5rem 0;
-        }
-
-        .action-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: linear-gradient(135deg, #3498db, #2ecc71);
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            min-width: 150px;
-            justify-content: center;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .action-button.secondary {
-            background: linear-gradient(135deg, #9b59b6, #3498db);
-        }
-
-        .action-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
-        }
-
-        .action-button.secondary:hover {
-            background: linear-gradient(135deg, #8e44ad, #2980b9);
-        }
-
-        .action-button i {
-            font-size: 0.8rem;
-        }
-
-        /* Tags de technologies */
-        .tech-tags {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.6rem;
-            margin: 1rem 0;
-            max-width: 500px;
-        }
-
-        .tech-tag {
-            background: rgba(255, 255, 255, 0.08);
-            padding: 0.4rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.75rem;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        /* Pied de page */
-        .footer {
-            margin-top: 1.5rem;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
-        }
-
-        .footer p {
-            margin-bottom: 0.2rem;
-        }
-
-        /* Interface système discrète */
-        .system-ui {
-            position: fixed;
-            z-index: 10;
-            pointer-events: auto;
-        }
-
-        /* Bouton plein écran */
-        .fullscreen-btn {
-            top: 15px;
-            left: 15px;
-            width: 34px;
-            height: 34px;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            color: rgba(255, 255, 255, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .fullscreen-btn:hover {
-            background: rgba(0, 0, 0, 0.6);
-            border-color: rgba(255, 255, 255, 0.25);
-            transform: scale(1.05);
-        }
-
-        /* Indicateur de mode */
-        .presentation-mode {
-            top: 15px;
-            right: 15px;
-            background: rgba(34, 197, 94, 0.15);
-            border: 1px solid rgba(34, 197, 94, 0.25);
-            border-radius: 50px;
-            padding: 5px 10px;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.65rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .pulse-dot {
-            width: 4px;
-            height: 4px;
-            background: #4ade80;
-            border-radius: 50%;
-            animation: pulseDot 2s infinite;
-        }
-
-        @keyframes pulseDot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        /* Animation simple */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .ui-overlay {
-                padding: 1.5rem;
-                width: 95%;
-            }
-            
-            .main-title {
-                font-size: 1.8rem;
-            }
-            
-            .subtitle {
-                font-size: 1rem;
-            }
-            
-            .description {
-                font-size: 0.9rem;
-            }
-            
-            .features-container {
-                flex-direction: column;
-                align-items: center;
-                gap: 0.8rem;
-            }
-            
-            .feature-card {
-                width: 90%;
-                max-width: 280px;
-                padding: 1rem;
-            }
-            
-            .action-button {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.8rem;
-                min-width: 140px;
-            }
-            
-            .buttons-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .tech-tags {
-                gap: 0.4rem;
-            }
-            
-            .tech-tag {
-                padding: 0.3rem 0.6rem;
-                font-size: 0.7rem;
-            }
-
-            .fullscreen-btn, .presentation-mode {
-                position: relative;
-                top: auto;
-                left: auto;
-                right: auto;
-                margin: 10px;
-                display: inline-flex;
-            }
-
-            .presentation-mode {
-                margin-top: 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .main-title {
-                font-size: 1.5rem;
-            }
-            
-            .subtitle {
-                font-size: 0.9rem;
-            }
-            
-            .ui-overlay {
-                padding: 1rem;
-            }
-            
-            .background-image {
-                object-fit: contain;
-                background-color: #0f172a;
-            }
-        }
-
-        /* Mode plein écran optimisé */
-        body:fullscreen .background-image {
-            filter: brightness(0.95) contrast(1.1);
-        }
-        
-        body:fullscreen .ui-overlay {
-            background: rgba(0, 0, 0, 0.3);
-        }
-    </style>
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .overlay{padding:1.2rem .8rem;width:95%;border-radius:16px}
+  .main-title{font-size:1.3rem}
+  .flag-circle{height:44px;width:44px}
+  .flag-circle .canton .star{font-size:14px}
+  .features{flex-direction:column;align-items:center;gap:.6rem}
+  .f-card{width:86%;max-width:260px;padding:.7rem}
+  .btn{font-size:.72rem;padding:5px 12px;min-width:100px}
+  .tags{gap:.3rem}
+  .tag{font-size:.62rem;padding:2px 8px}
+}
+@media(max-width:480px){
+  .overlay{padding:.8rem .6rem;border-radius:12px}
+  .main-title{font-size:1.1rem}
+  .subtitle{font-size:.8rem}
+  .desc{font-size:.78rem}
+  .flag-circle{height:38px;width:38px}
+  .flag-circle .canton .star{font-size:12px}
+  .f-card{padding:.6rem}
+  .f-icon{font-size:1.3rem}
+  .f-title{font-size:.85rem}
+  .f-list{font-size:.72rem}
+  .btn{font-size:.68rem;padding:4px 10px;min-width:90px}
+  .btns{flex-direction:column;align-items:center}
+  .school-badge{font-size:.65rem;padding:2px 10px}
+  .bg-img{object-fit:contain}
+  .footer{font-size:.6rem}
+}
+@media(max-width:360px){
+  .flag-circle{height:32px;width:32px}
+  .flag-circle .canton .star{font-size:10px}
+  .main-title{font-size:.95rem}
+  .desc{font-size:.72rem}
+}
+</style>
 </head>
 <body>
-    <!-- Image de fond Ecran.jpeg -->
-    <img src="Ecran.jpeg" alt="Leçon sur les volcans" class="background-image">
-    
-    <!-- Interface système discrète -->
-    <div class="system-ui fullscreen-btn" onclick="toggleFullscreen()">
-        <i class="fas fa-expand"></i>
+
+<img src="Ecran.jpeg" alt="" class="bg-img">
+
+<div class="sys fs-btn" onclick="toggleFullscreen()"><i class="fas fa-expand"></i></div>
+<div class="sys pres-mode"><div class="pulse-dot"></div>Présentation</div>
+
+<div class="content">
+  <div class="overlay">
+
+    <div class="flag-wrap">
+      <div class="flag-circle">
+        <div class="s"></div><div class="s"></div><div class="s"></div><div class="s"></div><div class="s"></div>
+        <div class="canton"><span class="star">&#9733;</span></div>
+      </div>
+    </div>
+    <div class="school-badge"><i class="fas fa-school"></i> Collège &amp; Lycée &bull; Togo</div>
+
+    <h1 class="main-title">Système Projeté Éducatif</h1>
+    <h2 class="subtitle">Modernisation de l'Enseignement</h2>
+    <div class="sep"></div>
+    <p class="desc">
+      Interface immersive pour cours projet&eacute;s &mdash; technologies modernes au service de la p&eacute;dagogie.
+    </p>
+
+    <div class="features">
+      <div class="f-card">
+        <div class="f-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+        <h3 class="f-title">Interface Immersive</h3>
+        <ul class="f-list">
+          <li>Design optimis&eacute; projecteur</li>
+          <li>Navigation intuitive</li>
+          <li>Mode plein &eacute;cran</li>
+          <li>Interface responsive</li>
+        </ul>
+      </div>
+      <div class="f-card">
+        <div class="f-icon"><i class="fas fa-book-open"></i></div>
+        <h3 class="f-title">Contenu Interactif</h3>
+        <ul class="f-list">
+          <li>Cours multim&eacute;dias</li>
+          <li>Quiz et &eacute;valuations</li>
+          <li>Visualisations 3D</li>
+          <li>Vid&eacute;os int&eacute;gr&eacute;es</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="system-ui presentation-mode">
-        <div class="pulse-dot"></div>
-        Présentation
+    <div class="btns">
+      <a href="Ecran.html" class="btn" target="_blank"><i class="fas fa-external-link-alt"></i> Ouvrir le Cours</a>
+      <button class="btn sec" onclick="showDemo()"><i class="fas fa-play-circle"></i> Voir D&eacute;mo</button>
     </div>
 
-    <!-- Contenu principal -->
-    <div class="content">
-        <div class="ui-overlay fade-in">
-            <h1 class="main-title">Système Projeté Éducatif</h1>
-            <h2 class="subtitle">Modernisation de l'Enseignement</h2>
-            <div class="separator"></div>
-            
-            <p class="description">
-                Interface immersive pour cours projetés dans les établissements scolaires.<br>
-                Technologie moderne au service de la pédagogie.
-            </p>
-
-            <!-- Fonctionnalités principales -->
-            <div class="features-container">
-                <!-- Fonctionnalité 1: Interface -->
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                    </div>
-                    <h3 class="feature-title">Interface Immersive</h3>
-                    <ul class="feature-list">
-                        <li>Design optimisé projecteur</li>
-                        <li>Navigation intuitive</li>
-                        <li>Mode plein écran</li>
-                        <li>Interface responsive</li>
-                        <li>Animations pédagogiques</li>
-                    </ul>
-                </div>
-
-                <!-- Fonctionnalité 2: Contenu -->
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-book-open"></i>
-                    </div>
-                    <h3 class="feature-title">Contenu Interactif</h3>
-                    <ul class="feature-list">
-                        <li>Cours multimédias</li>
-                        <li>Quiz et évaluations</li>
-                        <li>Visualisations</li>
-                        <li>Vidéos intégrées</li>
-                        <li>Contenu adaptatif</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Boutons d'action -->
-            <div class="buttons-container">
-                <a href="Ecran.html" class="action-button" target="_blank">
-                    <i class="fas fa-external-link-alt"></i>
-                    Ouvrir le Cours
-                </a>
-                <a href="javascript:void(0)" class="action-button secondary" onclick="showDemo()">
-                    <i class="fas fa-play-circle"></i>
-                    Voir Démo
-                </a>
-            </div>
-
-            <!-- Tags technologiques -->
-            <div class="tech-tags">
-                <div class="tech-tag">Interface Immersive</div>
-                <div class="tech-tag">Contenu Interactif</div>
-                <div class="tech-tag">Plein Écran</div>
-                <div class="tech-tag">Pédagogie Moderne</div>
-                <div class="tech-tag">Multi-plateforme</div>
-            </div>
-
-            <!-- Pied de page -->
-            <div class="footer">
-                <p><strong>Système Projeté Éducatif</strong> - Modernisation de l'enseignement</p>
-                <p>Interface immersive pour cours projetés | Collèges & Lycées</p>
-            </div>
-        </div>
+    <div class="tags">
+      <span class="tag">Interface Immersive</span>
+      <span class="tag">Contenu Interactif</span>
+      <span class="tag">Plein &Eacute;cran</span>
+      <span class="tag">P&eacute;dagogie Moderne</span>
+      <span class="tag">Coll&egrave;ge &amp; Lyc&eacute;e</span>
     </div>
 
-    <script>
-        // Plein écran
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Erreur plein écran: ${err.message}`);
-                });
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
-        }
+    <div class="footer">
+      <p><strong>Syst&egrave;me Projet&eacute; &Eacute;ducatif</strong> &middot; Coll&egrave;ge &amp; Lyc&eacute;e &middot; Togo</p>
+    </div>
+  </div>
+</div>
 
-        // Mise à jour de l'indicateur de mode
-        document.addEventListener('fullscreenchange', () => {
-            const isFullscreen = !!document.fullscreenElement;
-            const indicator = document.querySelector('.presentation-mode');
-            
-            if (isFullscreen) {
-                indicator.innerHTML = '<div class="pulse-dot"></div> Plein Écran';
-                indicator.style.background = 'rgba(59, 130, 246, 0.15)';
-                indicator.style.borderColor = 'rgba(59, 130, 246, 0.25)';
-            } else {
-                indicator.innerHTML = '<div class="pulse-dot"></div> Présentation';
-                indicator.style.background = 'rgba(34, 197, 94, 0.15)';
-                indicator.style.borderColor = 'rgba(34, 197, 94, 0.25)';
-            }
-        });
-
-        // Démo du système
-        function showDemo() {
-            const demo = document.createElement('div');
-            demo.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.95);
-                z-index: 1000;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                animation: fadeIn 0.3s ease;
-                padding: 20px;
-                text-align: center;
-            `;
-            
-            demo.innerHTML = `
-                <div style="max-width: 500px;">
-                    <div style="font-size: 3rem; margin-bottom: 20px; color: #3498db;">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                    </div>
-                    <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: white;">Système Projeté Éducatif</h2>
-                    <p style="font-size: 1rem; margin-bottom: 25px; color: rgba(255, 255, 255, 0.9); line-height: 1.5;">
-                        Interface immersive pour la modernisation de l'enseignement :
-                    </p>
-                    <div style="margin: 25px 0;">
-                        <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 10px;">
-                            <div style="font-size: 1.8rem; color: #2ecc71; margin-bottom: 10px;">
-                                <i class="fas fa-desktop"></i>
-                            </div>
-                            <div style="font-size: 0.9rem; color: white;">Interface optimisée pour projecteurs</div>
-                        </div>
-                        <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 10px;">
-                            <div style="font-size: 1.8rem; color: #f39c12; margin-bottom: 10px;">
-                                <i class="fas fa-book-open"></i>
-                            </div>
-                            <div style="font-size: 0.9rem; color: white;">Contenu interactif et multimédia</div>
-                        </div>
-                    </div>
-                    <button onclick="this.parentElement.parentElement.remove()" style="
-                        margin-top: 25px;
-                        background: linear-gradient(135deg, #3498db, #2ecc71);
-                        color: white;
-                        padding: 10px 30px;
-                        border-radius: 25px;
-                        cursor: pointer;
-                        font-size: 0.9rem;
-                        border: none;
-                        transition: all 0.3s ease;
-                    ">Fermer la Démo</button>
-                </div>
-            `;
-            
-            document.body.appendChild(demo);
-        }
-
-        // Effet de parallaxe au défilement
-        window.addEventListener('scroll', function() {
-            const scrolled = window.pageYOffset;
-            const background = document.querySelector('.background-image');
-            if (background) {
-                background.style.transform = `translateY(${scrolled * 0.15}px)`;
-            }
-        });
-
-        // Animation des cartes au survol
-        const featureCards = document.querySelectorAll('.feature-card');
-        featureCards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.4)';
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.boxShadow = 'none';
-            });
-        });
-
-        // Auto-masquage de l'interface après inactivité
-        let hideTimeout;
-        const uiElements = document.querySelectorAll('.ui-overlay, .system-ui');
-        
-        function showUI() {
-            clearTimeout(hideTimeout);
-            uiElements.forEach(el => {
-                el.style.opacity = '1';
-                el.style.pointerEvents = 'auto';
-            });
-            
-            hideTimeout = setTimeout(() => {
-                uiElements.forEach(el => {
-                    if (!el.classList.contains('fullscreen-btn') && !el.classList.contains('presentation-mode')) {
-                        el.style.opacity = '0.3';
-                        el.style.pointerEvents = 'none';
-                    }
-                });
-            }, 5000);
-        }
-        
-        ['mousemove', 'click', 'touchstart'].forEach(event => {
-            document.addEventListener(event, showUI);
-        });
-        
-        showUI();
-
-        // Ajout de l'animation CSS
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeIn {
-                from { opacity: 0; }
-                to { opacity: 1; }
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
+<script>
+function toggleFullscreen(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen().catch(()=>{});
+  } else {
+    document.exitFullscreen();
+  }
+}
+document.addEventListener('fullscreenchange',()=>{
+  const el=document.querySelector('.pres-mode');
+  if(document.fullscreenElement){
+    el.innerHTML='<div class="pulse-dot"></div> Plein &Eacute;cran';
+    el.style.background='rgba(59,130,246,.12)';
+    el.style.borderColor='rgba(59,130,246,.2)';
+  } else {
+    el.innerHTML='<div class="pulse-dot"></div> Pr&eacute;sentation';
+    el.style.background='rgba(34,197,94,.12)';
+    el.style.borderColor='rgba(34,197,94,.2)';
+  }
+});
+function showDemo(){
+  const d=document.createElement('div');
+  d.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.95);z-index:1000;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;text-align:center;animation:fadeUp .3s ease';
+  d.innerHTML=`<div style="max-width:420px;">
+    <div style="font-size:2.5rem;margin-bottom:16px;color:#3498db"><i class="fas fa-chalkboard-teacher"></i></div>
+    <h2 style="font-size:1.4rem;margin-bottom:16px;color:#fff">Système Projeté Éducatif</h2>
+    <div style="margin:16px 0">
+      <div style="background:rgba(255,255,255,.08);padding:10px 14px;border-radius:8px;margin-bottom:8px;font-size:.85rem">
+        <i class="fas fa-desktop" style="color:#2ecc71;margin-right:8px"></i> Interface optimisée projecteur
+      </div>
+      <div style="background:rgba(255,255,255,.08);padding:10px 14px;border-radius:8px;font-size:.85rem">
+        <i class="fas fa-book-open" style="color:#f39c12;margin-right:8px"></i> Contenu interactif & multimédia
+      </div>
+    </div>
+    <button onclick="this.closest('div').parentElement.remove()" style="margin-top:20px;background:linear-gradient(135deg,#3498db,#2ecc71);color:#fff;padding:8px 28px;border-radius:25px;cursor:pointer;font-size:.85rem;border:none">Fermer</button>
+  </div>`;
+  document.body.appendChild(d);
+}
+let hideTimer;
+const uiEls=document.querySelectorAll('.overlay,.sys');
+function showUI(){
+  clearTimeout(hideTimer);
+  uiEls.forEach(e=>{e.style.opacity='1';e.style.pointerEvents='auto'});
+  hideTimer=setTimeout(()=>{
+    uiEls.forEach(e=>{
+      if(!e.classList.contains('fs-btn')&&!e.classList.contains('pres-mode')){
+        e.style.opacity='.25';e.style.pointerEvents='none';
+      }
+    });
+  },5000);
+}
+['mousemove','click','touchstart'].forEach(e=>document.addEventListener(e,showUI));
+showUI();
+</script>
 </body>
 </html>
