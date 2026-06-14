@@ -696,7 +696,7 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
       Situations complexes, laboratoire virtuel, suivi par comp&eacute;tence &mdash; accessible sur mobile, tablette et projecteur.
     </p>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <a href="#commande" class="btn"><i class="fas fa-shopping-cart"></i> Commander 7j &middot; 500 FCFA</a>
+      <a href="#commande" class="btn"><i class="fas fa-shopping-cart"></i> Commander 30j &middot; 2000 FCFA</a>
     </div>
   </div>
 
@@ -704,7 +704,7 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
   <div id="commande" class="form-wrap">
     <div class="form-title">
       <i class="fas fa-key" style="color:var(--yellow)"></i>
-      <span>Acc&egrave;s 7 jours &middot; Coll&egrave;ge &amp; Lyc&eacute;e &middot; 500 FCFA</span>
+      <span>Acc&egrave;s 30 jours &middot; Coll&egrave;ge &amp; Lyc&eacute;e &middot; 2000 FCFA</span>
     </div>
 
     <!-- ONGLETS AUTH -->
@@ -720,7 +720,7 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
     <!-- PANEL INSCRIPTION -->
     <div class="auth-panel active" id="panelRegister">
       <p style="margin-bottom:16px;font-size:.9rem">
-        G&eacute;n&eacute;rez votre code d'acc&egrave;s &mdash; paiement <strong>500 F CFA</strong> par Mobile Money au <strong>+228 92 87 16 05</strong>.
+        G&eacute;n&eacute;rez votre code d'acc&egrave;s &mdash; paiement <strong>2000 F CFA</strong> par Mobile Money au <strong>+228 92 87 16 05</strong>.
       </p>
 
       <form id="orderForm">
@@ -763,7 +763,7 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
         </div>
 
         <div class="payment-info">
-          <p><strong>&#128176; Paiement :</strong> 500 F CFA par Mobile Money (Mixx) au <strong>+228 92 87 16 05</strong></p>
+          <p><strong>&#128176; Paiement :</strong> 2000 F CFA par Mobile Money (Mixx) au <strong>+228 92 87 16 05</strong></p>
           <p style="margin-top:4px;font-size:.85rem">&#129302; Le code sera envoy&eacute; par WhatsApp apr&egrave;s g&eacute;n&eacute;ration.</p>
         </div>
 
@@ -833,7 +833,7 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
   <div id="protectedSection" class="protected">
     <div class="expiration-box">
       <span style="display:block;margin-bottom:4px">&#9203; Temps restant avant expiration</span>
-      <div class="countdown-big" id="countdown">7j 0h 0min 0s</div>
+      <div class="countdown-big" id="countdown">30j 0h 0min 0s</div>
       <div class="progress-bar-big">
         <div class="fill" id="progressFillBig" style="width:100%"></div>
       </div>
@@ -1106,7 +1106,7 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
     var heures = Math.floor((diff % 86400000) / 3600000);
     var minutes = Math.floor((diff % 3600000) / 60000);
     var secondes = Math.floor((diff % 60000) / 1000);
-    var pct = Math.max(0, Math.min(100, (diff / (7 * 86400000)) * 100));
+    var pct = Math.max(0, Math.min(100, (diff / (30 * 86400000)) * 100));
 
     // compteur dans la section protégée
     D.countdown.textContent = jours + 'j ' + heures + 'h ' + minutes + 'min ' + secondes + 's';
@@ -1153,8 +1153,8 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
     D.identifiantGenere.innerHTML = '&#127919; Identifiant : expir&eacute;';
     D.error.style.display = 'block';
     D.error.innerHTML = '&#9200; Acc&egrave;s expir&eacute;. Le contenu est bloqu&eacute;. <br><br>' +
-      '&#128260; <strong>Nouvelle inscription n\u00E9cessaire</strong> pour obtenir un nouveau code d\u2019acc\u00E8s de 7 jours.<br><br>' +
-      '&#128176; Paiement : 500 F CFA par Mobile Money au <strong>+228 92 87 16 05</strong>.';
+      '&#128260; <strong>Nouvelle inscription n\u00E9cessaire</strong> pour obtenir un nouveau code d\u2019acc\u00E8s de 30 jours.<br><br>' +
+      '&#128176; Paiement : 2000 F CFA par Mobile Money au <strong>+228 92 87 16 05</strong>.';
     setTimeout(function(){ D.error.style.display = 'none'; }, 12000);
   }
 
@@ -1166,7 +1166,7 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
     if(tmpCode && !localStorage.getItem(CK)){
       saveCredentials(tmpCode, sessionStorage.getItem('temp_identifiant'), sessionStorage.getItem('temp_nom'));
       if(!localStorage.getItem(EK)){
-        saveExpiration(Date.now() + 7 * 86400000);
+        saveExpiration(Date.now() + 30 * 86400000);
       }
       sessionStorage.removeItem('temp_code');
       sessionStorage.removeItem('temp_identifiant');
@@ -1234,7 +1234,7 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
       '\uD83C\uDF0D *R\u00E9gion :* ' + region + '%0A%0A' +
       '\uD83D\uDD11 *Code :* ' + code + '%0A' +
       '\uD83C\uDF93 *Identifiant :* ' + id + '%0A%0A' +
-      '\uD83D\uDCB0 *Montant :* 500 FCFA (Mixx)%0A%0A' +
+      '\uD83D\uDCB0 *Montant :* 2000 FCFA (Mixx)%0A%0A' +
       '\u2705 Envoy\u00E9 depuis APC Sciences Togo.';
     window.open('https://wa.me/22892871605?text=' + msg, '_blank');
   }
@@ -1251,10 +1251,10 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
     }
     // S'assurer que l'expiration existe
     if(!localStorage.getItem(EK)){
-      saveExpiration(Date.now() + 7 * 86400000);
+      saveExpiration(Date.now() + 30 * 86400000);
     }
     localStorage.setItem(SK, 'true');
-    alert('\u2705 Compte activ\u00E9 pour 7 jours !');
+    alert('\u2705 Compte activ\u00E9 pour 30 jours !');
     window.location.reload();
   };
 
@@ -1275,7 +1275,7 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
 
     var code = generateCode();
     var id = generateId(nom, tel);
-    var exp = Date.now() + 7 * 86400000;
+    var exp = Date.now() + 30 * 86400000;
 
     // Sauvegarde immédiate dans localStorage
     saveCredentials(code, id, nom);
@@ -1297,7 +1297,7 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
     D.alert.innerHTML = '\u2705 Code g\u00E9n\u00E9r\u00E9 et envoy\u00E9 par WhatsApp !<br>' +
       'Code : <strong>' + code + '</strong><br>' +
       'Identifiant : <strong>' + id + '</strong><br><br>' +
-      '\u23F3 En attente de confirmation du paiement (500 FCFA).<br>' +
+      '\u23F3 En attente de confirmation du paiement (2000 FCFA).<br>' +
       'Vos identifiants sont sauvegard\u00E9s automatiquement jusqu\u2019au ' +
       new Date(exp).toLocaleDateString('fr-FR', {
         day: '2-digit', month: '2-digit', year: 'numeric',
