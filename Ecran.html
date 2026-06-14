@@ -189,8 +189,6 @@ body{
 .btn-red{background:var(--red)}
 .btn-red:hover{box-shadow:0 4px 14px rgba(206,17,39,0.25)}
 
-/* ===== (projection card supprimée - contenu inutile) ===== */
-
 /* ===== GRILLE MATIÈRES ===== */
 .grid{
   display:grid;
@@ -337,6 +335,47 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
   box-shadow:0 5px 18px rgba(0,106,63,0.3);
 }
 .btn-submit:active{transform:translateY(0)}
+.btn-submit-red{
+  background:linear-gradient(135deg,var(--red),#a00e20);
+  color:#fff;border:none;
+  padding:11px 22px;
+  border-radius:40px;
+  font-size:.95rem;font-weight:700;
+  width:100%;
+  cursor:pointer;
+  transition:var(--transition);
+  border:2px solid var(--yellow);
+  margin-bottom:12px;
+  font-family:'Inter',sans-serif;
+}
+.btn-submit-red:hover{
+  transform:translateY(-1px);
+  box-shadow:0 5px 18px rgba(206,17,39,0.3);
+}
+.btn-submit-red:active{transform:translateY(0)}
+
+/* ===== ONGLETS AUTH ===== */
+.auth-tabs{
+  display:flex;gap:6px;margin-bottom:16px;
+}
+.auth-tab{
+  flex:1;padding:8px 12px;border-radius:30px;
+  border:2px solid var(--green);
+  background:transparent;color:var(--text);
+  font-weight:600;font-size:.82rem;
+  cursor:pointer;transition:var(--transition);
+  font-family:'Inter',sans-serif;
+  text-align:center;
+}
+.auth-tab.active{
+  background:var(--green);color:#fff;
+  border-color:var(--green);
+}
+.auth-tab:hover:not(.active){
+  background:rgba(0,106,63,0.06);
+}
+.auth-panel{display:none}
+.auth-panel.active{display:block}
 
 /* ===== SECTION PROTÉGÉE ===== */
 .protected{
@@ -667,82 +706,124 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
       <i class="fas fa-key" style="color:var(--yellow)"></i>
       <span>Acc&egrave;s 7 jours &middot; Coll&egrave;ge &amp; Lyc&eacute;e &middot; 500 FCFA</span>
     </div>
-    <p style="margin-bottom:16px;font-size:.9rem">
-      G&eacute;n&eacute;rez votre code d'acc&egrave;s &mdash; paiement <strong>500 F CFA</strong> par Mobile Money au <strong>+228 92 87 16 05</strong>.
-    </p>
 
-    <form id="orderForm">
-      <div class="form-row">
-        <div class="form-group">
-          <label><i class="fas fa-user"></i> Nom &amp; Pr&eacute;nom</label>
-          <input type="text" class="form-control" id="nom" placeholder="KOLA Essouhona" required>
-        </div>
-        <div class="form-group">
-          <label><i class="fas fa-phone"></i> T&eacute;l&eacute;phone</label>
-          <input type="tel" class="form-control" id="tel" placeholder="90 00 00 00" required>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label><i class="fas fa-school"></i> Inspection</label>
-          <select class="form-control" id="inspection" required>
-            <option value="">Choisir l'inspection</option>
-            <option value="Lomé-Commune">Lom&eacute;-Commune</option>
-            <option value="Lomé-Golfe">Lom&eacute;-Golfe</option>
-            <option value="Maritime">Maritime</option>
-            <option value="Plateaux">Plateaux</option>
-            <option value="Centrale">Centrale</option>
-            <option value="Kara">Kara</option>
-            <option value="Savanes">Savanes</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label><i class="fas fa-map-marker-alt"></i> R&eacute;gion</label>
-          <select class="form-control" id="region" required>
-            <option value="">Choisir la r&eacute;gion</option>
-            <option value="Maritime">Maritime</option>
-            <option value="Plateaux">Plateaux</option>
-            <option value="Centrale">Centrale</option>
-            <option value="Kara">Kara</option>
-            <option value="Savanes">Savanes</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="payment-info">
-        <p><strong>&#128176; Paiement :</strong> 500 F CFA par Mobile Money (Mixx) au <strong>+228 92 87 16 05</strong></p>
-        <p style="margin-top:4px;font-size:.85rem">&#129302; Le code sera envoy&eacute; par WhatsApp apr&egrave;s g&eacute;n&eacute;ration.</p>
-      </div>
-
-      <div class="code-display" id="codeGenere">
-        &#9889; Votre code appara&icirc;tra ici
-      </div>
-      <div class="code-display" id="identifiantGenere" style="background:linear-gradient(135deg,#f9f0e0,#f5e8ce);">
-        &#127919; Identifiant : enseignant_...
-      </div>
-
-      <div class="days-remaining" id="daysRemaining">
-        <div>&#9200; Temps restant : <span class="days-num" id="daysNum">7</span>j <span id="hoursNum">0</span>h <span id="minsNum">0</span>min</div>
-        <div class="progress-bar">
-          <div class="progress-bar-fill" id="progressFill" style="width:100%"></div>
-        </div>
-      </div>
-
-      <button type="button" class="btn-submit" id="btnGenerer">
-        <i class="fas fa-magic"></i> G&eacute;n&eacute;rer &amp; envoyer par WhatsApp
+    <!-- ONGLETS AUTH -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabRegister" data-panel="register">
+        <i class="fas fa-plus-circle"></i> Nouveau compte
       </button>
+      <button class="auth-tab" id="tabLogin" data-panel="login">
+        <i class="fas fa-sign-in-alt"></i> Se connecter
+      </button>
+    </div>
 
-      <div class="cv-access" id="cvAccess">
-        <div style="text-align:center">
-          <button class="btn-cv" id="btnAccesCV">
-            <span class="pulse-dot"></span>
-            <i class="fas fa-file-pdf"></i> Acc&eacute;der &agrave; mon CV
-            <i class="fas fa-arrow-right"></i>
-          </button>
+    <!-- PANEL INSCRIPTION -->
+    <div class="auth-panel active" id="panelRegister">
+      <p style="margin-bottom:16px;font-size:.9rem">
+        G&eacute;n&eacute;rez votre code d'acc&egrave;s &mdash; paiement <strong>500 F CFA</strong> par Mobile Money au <strong>+228 92 87 16 05</strong>.
+      </p>
+
+      <form id="orderForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label><i class="fas fa-user"></i> Nom &amp; Pr&eacute;nom</label>
+            <input type="text" class="form-control" id="nom" placeholder="KOLA Essouhona" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-phone"></i> T&eacute;l&eacute;phone</label>
+            <input type="tel" class="form-control" id="tel" placeholder="90 00 00 00" required>
+          </div>
         </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label><i class="fas fa-school"></i> Inspection</label>
+            <select class="form-control" id="inspection" required>
+              <option value="">Choisir l'inspection</option>
+              <option value="Lomé-Commune">Lom&eacute;-Commune</option>
+              <option value="Lomé-Golfe">Lom&eacute;-Golfe</option>
+              <option value="Maritime">Maritime</option>
+              <option value="Plateaux">Plateaux</option>
+              <option value="Centrale">Centrale</option>
+              <option value="Kara">Kara</option>
+              <option value="Savanes">Savanes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-map-marker-alt"></i> R&eacute;gion</label>
+            <select class="form-control" id="region" required>
+              <option value="">Choisir la r&eacute;gion</option>
+              <option value="Maritime">Maritime</option>
+              <option value="Plateaux">Plateaux</option>
+              <option value="Centrale">Centrale</option>
+              <option value="Kara">Kara</option>
+              <option value="Savanes">Savanes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="payment-info">
+          <p><strong>&#128176; Paiement :</strong> 500 F CFA par Mobile Money (Mixx) au <strong>+228 92 87 16 05</strong></p>
+          <p style="margin-top:4px;font-size:.85rem">&#129302; Le code sera envoy&eacute; par WhatsApp apr&egrave;s g&eacute;n&eacute;ration.</p>
+        </div>
+
+        <button type="button" class="btn-submit" id="btnGenerer">
+          <i class="fas fa-magic"></i> G&eacute;n&eacute;rer &amp; envoyer par WhatsApp
+        </button>
+      </form>
+    </div>
+
+    <!-- PANEL CONNEXION -->
+    <div class="auth-panel" id="panelLogin">
+      <p style="margin-bottom:16px;font-size:.9rem">
+        Connectez-vous avec votre identifiant et votre code d'acc&egrave;s existants.
+      </p>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label><i class="fas fa-id-card"></i> Identifiant</label>
+          <input type="text" class="form-control" id="loginId" placeholder="tg_essouhona_1605" required>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-key"></i> Code d'acc&egrave;s</label>
+          <input type="text" class="form-control" id="loginCode" placeholder="ABCD1234" required>
+        </div>
+        <button type="button" class="btn-submit" id="btnLogin">
+          <i class="fas fa-sign-in-alt"></i> Se connecter
+        </button>
+      </form>
+
+      <div style="text-align:center;margin-top:10px">
+        <small style="color:#888">Vous n'avez pas de compte ?
+          <a href="#" id="switchToRegister" style="color:var(--green);font-weight:600">Cr&eacute;er un compte</a>
+        </small>
       </div>
-    </form>
+    </div>
+
+    <!-- AFFICHAGE DES IDENTIFIANTS ET DU TIMER (communs) -->
+    <div class="code-display" id="codeGenere">
+      &#9889; Votre code appara&icirc;tra ici
+    </div>
+    <div class="code-display" id="identifiantGenere" style="background:linear-gradient(135deg,#f9f0e0,#f5e8ce);">
+      &#127919; Identifiant : enseignant_...
+    </div>
+
+    <div class="days-remaining" id="daysRemaining">
+      <div>&#9200; Temps restant : <span class="days-num" id="daysNum">0</span>j <span id="hoursNum">0</span>h <span id="minsNum">0</span>min</div>
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="progressFill" style="width:100%"></div>
+      </div>
+    </div>
+
+    <div class="cv-access" id="cvAccess">
+      <div style="text-align:center">
+        <button class="btn-cv" id="btnAccesCV">
+          <span class="pulse-dot"></span>
+          <i class="fas fa-file-pdf"></i> Acc&eacute;der &agrave; mon CV
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
 
     <div class="alert" id="alertMsg"></div>
     <div class="error-msg" id="errorMsg"></div>
@@ -782,7 +863,7 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
         <i class="fas fa-file-pdf"></i> Acc&eacute;der &agrave; mon CV
         <i class="fas fa-arrow-right"></i>
       </button>
-      <button class="btn btn-yellow" id="btnNouveauCompte" style="font-size:1.05rem;padding:12px 28px;margin-top:12px">&#128260; Nouveau compte</button>
+      <button class="btn btn-yellow" id="btnNouveauCompte" style="font-size:1.05rem;padding:12px 28px;margin-top:12px">&#128260; Nouvelle inscription</button>
     </div>
   </div>
 
@@ -823,262 +904,482 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
         NK = 'apc_nom';
 
   const $ = id => document.getElementById(id);
-  const ps = $('protectedSection'),
-        cs = $('commande'),
-        mg = $('matieresGrid'),
-        cd = $('countdown'),
-        ed = $('expirationDate'),
-        cv = $('cvAccess'),
-        am = $('alertMsg'),
-        em = $('errorMsg'),
-        dr = $('daysRemaining'),
-        dn = $('daysNum'),
-        hn = $('hoursNum'),
-        mn = $('minsNum'),
-        pf = $('progressFill'),
-        pfb = $('progressFillBig');
 
-  function checkAccount(){
-    const actif = localStorage.getItem(SK) === 'true',
-          exp = localStorage.getItem(EK);
-    if(actif && exp){
-      const now = Date.now(), t = parseInt(exp);
-      if(now < t){ showProtected(t); return true }
-      else { clearAccount(); showExpired() }
-    } else showForm();
-    return false;
+  // Éléments du DOM
+  const D = {
+    protected: $('protectedSection'),
+    commande: $('commande'),
+    matieres: $('matieresGrid'),
+    countdown: $('countdown'),
+    expDate: $('expirationDate'),
+    cvAccess: $('cvAccess'),
+    alert: $('alertMsg'),
+    error: $('errorMsg'),
+    daysRemaining: $('daysRemaining'),
+    daysNum: $('daysNum'),
+    hoursNum: $('hoursNum'),
+    minsNum: $('minsNum'),
+    progressFill: $('progressFill'),
+    progressFillBig: $('progressFillBig'),
+    codeGenere: $('codeGenere'),
+    identifiantGenere: $('identifiantGenere'),
+    btnAccesCV: $('btnAccesCV'),
+    btnAccesCV2: $('btnAccesCV2'),
+    btnNouveauCompte: $('btnNouveauCompte'),
+    btnGenerer: $('btnGenerer'),
+    nom: $('nom'),
+    tel: $('tel'),
+    inspection: $('inspection'),
+    region: $('region'),
+    tabRegister: $('tabRegister'),
+    tabLogin: $('tabLogin'),
+    panelRegister: $('panelRegister'),
+    panelLogin: $('panelLogin'),
+    loginId: $('loginId'),
+    loginCode: $('loginCode'),
+    btnLogin: $('btnLogin'),
+    switchToRegister: $('switchToRegister')
+  };
+
+  let timerInterval = null;
+  let activeTab = 'register'; // 'register' ou 'login'
+
+  // ====== STOCKAGE ======
+
+  function getExpiration(){
+    const v = localStorage.getItem(EK);
+    return v ? parseInt(v, 10) : null;
   }
 
-  function clearAccount(){
-    [SK,EK,CK,IK,NK].forEach(k => localStorage.removeItem(k));
+  function getCode(){
+    return localStorage.getItem(CK);
   }
 
-  let countdownInterval = null;
-  let tempCountdownInterval = null;
-
-  function showProtected(t){
-    ps.style.display = 'block';
-    cs.style.display = 'none';
-    mg.style.display = 'none';
-    if(tempCountdownInterval){ clearInterval(tempCountdownInterval); tempCountdownInterval = null; }
-    ed.textContent = new Date(t).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-    updateCD(t);
-    if(countdownInterval) clearInterval(countdownInterval);
-    countdownInterval = setInterval(() => updateCD(t), 1000);
+  function getIdentifiant(){
+    return localStorage.getItem(IK);
   }
 
-  function updateCD(t){
-    const d = t - Date.now();
-    if(d <= 0){
-      clearAccount();
-      if(countdownInterval){ clearInterval(countdownInterval); countdownInterval = null; }
-      showExpired();
-      return;
-    }
-    const jours = Math.floor(d/864e5),
-          heures = Math.floor((d%864e5)/36e5),
-          minutes = Math.floor((d%36e5)/6e4),
-          secondes = Math.floor((d%6e4)/1e3);
-    cd.textContent = `${jours}j ${heures}h ${minutes}min ${secondes}s`;
-    const pct = Math.max(0, Math.min(100, (d / (7*864e5)) * 100));
-    if(pf) pf.style.width = pct + '%';
-    if(pfb) pfb.style.width = pct + '%';
-    if(dn) dn.textContent = jours;
-    if(hn) hn.textContent = heures;
-    if(mn) mn.textContent = minutes;
+  function getNom(){
+    return localStorage.getItem(NK);
   }
 
-  function showForm(){
-    ps.style.display = 'none';
-    cs.style.display = 'block';
-    mg.style.display = 'grid';
-    const tc = sessionStorage.getItem('temp_code');
-    if(tc){
-      cv.style.display = 'block';
-      $('codeGenere').innerHTML = `&#128274; <strong>${tc}</strong>`;
-      $('identifiantGenere').innerHTML = `&#127919; Identifiant : <strong>${sessionStorage.getItem('temp_identifiant')}</strong>`;
-      dr.style.display = 'block';
-      const tempEnd = Date.now() + 7*864e5;
-      updateTempCD(tempEnd);
-      if(tempCountdownInterval) clearInterval(tempCountdownInterval);
-      tempCountdownInterval = setInterval(() => updateTempCD(tempEnd), 1000);
-    }
+  function isActive(){
+    return localStorage.getItem(SK) === 'true';
   }
 
-  function updateTempCD(t){
-    const d = t - Date.now();
-    if(d <= 0){
-      if(tempCountdownInterval){ clearInterval(tempCountdownInterval); tempCountdownInterval = null; }
-      dr.style.display = 'block';
-      dn.textContent = '0';
-      hn.textContent = '0';
-      mn.textContent = '0';
-      pf.style.width = '0%';
-      return;
-    }
-    const jours = Math.floor(d/864e5),
-          heures = Math.floor((d%864e5)/36e5),
-          minutes = Math.floor((d%36e5)/6e4),
-          pct = Math.max(0, Math.min(100, (d / (7*864e5)) * 100));
-    dn.textContent = jours;
-    hn.textContent = heures;
-    mn.textContent = minutes;
-    pf.style.width = pct + '%';
+  function saveCredentials(code, id, nom){
+    localStorage.setItem(CK, code);
+    localStorage.setItem(IK, id);
+    localStorage.setItem(NK, nom);
   }
 
-  function showExpired(){
-    ps.style.display = 'none';
-    cs.style.display = 'block';
-    mg.style.display = 'grid';
-    if(countdownInterval){ clearInterval(countdownInterval); countdownInterval = null; }
-    if(tempCountdownInterval){ clearInterval(tempCountdownInterval); tempCountdownInterval = null; }
-    cv.style.display = 'none';
-    dr.style.display = 'block';
-    dn.textContent = '0';
-    hn.textContent = '0';
-    mn.textContent = '0';
-    pf.style.width = '0%';
-    $('codeGenere').innerHTML = '&#9889; Code expir&eacute;';
-    $('identifiantGenere').innerHTML = '&#127919; Identifiant : expir&eacute;';
-    em.style.display = 'block';
-    em.innerHTML = '&#9200; Acc&egrave;s expir&eacute;. CV.html est bloqu&eacute;. Commandez un nouveau compte pour acc&eacute;der au contenu.';
-    setTimeout(() => { em.style.display = 'none'; }, 8000);
+  function saveExpiration(ts){
+    localStorage.setItem(EK, ts.toString());
   }
 
-  function showError(msg){
-    em.style.display = 'block';
-    em.innerHTML = msg;
-    setTimeout(() => em.style.display = 'none', 5000);
-  }
-
-  function showAlert(msg){
-    am.style.display = 'block';
-    am.innerHTML = msg;
-  }
-
-  function genCode(){
-    const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let r = '';
-    for(let i=8;i--;) r += c[Math.random()*c.length|0];
-    return r;
-  }
-
-  function genId(nom,tel){
-    return `tg_${nom.replace(/\s+/g,'').toLowerCase().slice(0,8)}_${tel.replace(/\D/g,'').slice(-4)}`;
-  }
-
-  function sendWA(code,id,nom,tel,inspection,region){
-    const msg = `🔐 *NOUVEAU COMPTE GÉNÉRÉ* 🔐%0A%0A`+
-      `👤 *Nom :* ${nom}%0A📞 *Tél :* ${tel}%0A🏫 *Inspection :* ${inspection}%0A🌍 *Région :* ${region}%0A%0A`+
-      `🆔 *Identifiant :* ${id}%0A🔑 *Code :* ${code}%0A%0A💰 *Montant :* 500 FCFA (Mixx)%0A%0A✅ Envoyé depuis APC Sciences Togo.`;
-    window.open(`https://wa.me/22892871605?text=${msg}`, '_blank');
-  }
-
-  window.activerCompte = function(){
-    const c = sessionStorage.getItem('temp_code'),
-          i = sessionStorage.getItem('temp_identifiant'),
-          n = sessionStorage.getItem('temp_nom');
-    if(!c||!i||!n){ alert('Générez d\'abord un code.'); return }
-    const exp = Date.now() + 7*864e5;
-    localStorage.setItem(SK,'true');
-    localStorage.setItem(EK,exp.toString());
-    localStorage.setItem(CK,c);
-    localStorage.setItem(IK,i);
-    localStorage.setItem(NK,n);
+  function clearAll(){
+    [SK, EK, CK, IK, NK].forEach(k => localStorage.removeItem(k));
     sessionStorage.removeItem('temp_code');
     sessionStorage.removeItem('temp_identifiant');
     sessionStorage.removeItem('temp_nom');
-    alert('✅ Compte activé pour 7 jours !');
+  }
+
+  // ====== ONGLETS AUTH ======
+
+  function switchTab(tab){
+    activeTab = tab;
+    if(tab === 'register'){
+      D.tabRegister.classList.add('active');
+      D.tabLogin.classList.remove('active');
+      D.panelRegister.classList.add('active');
+      D.panelLogin.classList.remove('active');
+    } else {
+      D.tabLogin.classList.add('active');
+      D.tabRegister.classList.remove('active');
+      D.panelLogin.classList.add('active');
+      D.panelRegister.classList.remove('active');
+    }
+  }
+
+  D.tabRegister.addEventListener('click', function(){ switchTab('register'); });
+  D.tabLogin.addEventListener('click', function(){ switchTab('login'); });
+  if(D.switchToRegister){
+    D.switchToRegister.addEventListener('click', function(e){
+      e.preventDefault();
+      switchTab('register');
+    });
+  }
+
+  // ====== CONNEXION ======
+
+  function processLogin(){
+    var enteredId = D.loginId.value.trim();
+    var enteredCode = D.loginCode.value.trim();
+
+    if(!enteredId || !enteredCode){
+      D.error.style.display = 'block';
+      D.error.innerHTML = '\u274C Entrez votre identifiant et votre code.';
+      setTimeout(function(){ D.error.style.display = 'none'; }, 4000);
+      return;
+    }
+
+    // Vérifier si les identifiants correspondent à ceux enregistrés
+    var savedCode = localStorage.getItem(CK);
+    var savedId = localStorage.getItem(IK);
+    var savedExp = getExpiration();
+
+    if(!savedCode || !savedId){
+      D.error.style.display = 'block';
+      D.error.innerHTML = '\u274C Aucun compte trouv\u00E9 sur cet appareil. G\u00E9n\u00E9rez d\u2019abord un nouveau code.';
+      setTimeout(function(){ D.error.style.display = 'none'; }, 6000);
+      return;
+    }
+
+    if(enteredCode !== savedCode || enteredId !== savedId){
+      D.error.style.display = 'block';
+      D.error.innerHTML = '\u274C Identifiant ou code incorrect. V\u00E9rifiez vos informations.';
+      setTimeout(function(){ D.error.style.display = 'none'; }, 5000);
+      return;
+    }
+
+    // Vérifier expiration
+    if(savedExp && Date.now() >= savedExp){
+      D.error.style.display = 'block';
+      D.error.innerHTML = '\u274C Votre acc\u00E8s a expir\u00E9. Veuillez cr\u00E9er un nouveau compte.';
+      setTimeout(function(){ D.error.style.display = 'none'; }, 6000);
+      clearAll();
+      switchTab('register');
+      return;
+    }
+
+    // Connexion réussie
+    localStorage.setItem(SK, 'true');
+    D.alert.style.display = 'block';
+    D.alert.innerHTML = '\u2705 Connexion r\u00E9ussie ! Bienvenue.';
+    setTimeout(function(){
+      D.alert.style.display = 'none';
+      window.location.reload();
+    }, 1500);
+  }
+
+  D.btnLogin.addEventListener('click', processLogin);
+  D.loginCode.addEventListener('keydown', function(e){
+    if(e.key === 'Enter') processLogin();
+  });
+  D.loginId.addEventListener('keydown', function(e){
+    if(e.key === 'Enter') D.loginCode.focus();
+  });
+
+  // ====== AFFICHAGE DES IDENTIFIANTS ======
+
+  function showCredentials(code, id){
+    D.codeGenere.innerHTML = '&#128274; <strong>' + code + '</strong>';
+    D.identifiantGenere.innerHTML = '&#127919; Identifiant : <strong>' + id + '</strong>';
+  }
+
+  function resetCredentialsDisplay(){
+    D.codeGenere.innerHTML = '&#9889; Votre code appara&icirc;tra ici';
+    D.identifiantGenere.innerHTML = '&#127919; Identifiant : enseignant_...';
+  }
+
+  // ====== COMPTEUR / TIMER ======
+
+  function startTimer(expTS){
+    if(timerInterval) clearInterval(timerInterval);
+    tick(expTS);
+    timerInterval = setInterval(function(){ tick(expTS); }, 1000);
+  }
+
+  function tick(expTS){
+    var now = Date.now();
+    var diff = expTS - now;
+
+    if(diff <= 0){
+      if(timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+      clearAll();
+      showExpiredState();
+      return;
+    }
+
+    var jours = Math.floor(diff / 86400000);
+    var heures = Math.floor((diff % 86400000) / 3600000);
+    var minutes = Math.floor((diff % 3600000) / 60000);
+    var secondes = Math.floor((diff % 60000) / 1000);
+    var pct = Math.max(0, Math.min(100, (diff / (7 * 86400000)) * 100));
+
+    // compteur dans la section protégée
+    D.countdown.textContent = jours + 'j ' + heures + 'h ' + minutes + 'min ' + secondes + 's';
+
+    // compteur compact dans le formulaire
+    D.daysNum.textContent = jours;
+    D.hoursNum.textContent = heures;
+    D.minsNum.textContent = minutes;
+
+    // barres de progression
+    D.progressFill.style.width = pct + '%';
+    D.progressFillBig.style.width = pct + '%';
+  }
+
+  // ====== AFFICHAGE DES SECTIONS ======
+
+  function showForm(){
+    D.protected.style.display = 'none';
+    D.commande.style.display = 'block';
+    D.matieres.style.display = 'grid';
+  }
+
+  function showProtectedSection(expTS){
+    D.protected.style.display = 'block';
+    D.commande.style.display = 'none';
+    D.matieres.style.display = 'none';
+    D.cvAccess.style.display = 'block';
+    D.expDate.textContent = new Date(expTS).toLocaleDateString('fr-FR', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+  }
+
+  function showExpiredState(){
+    showForm();
+    switchTab('register');
+    D.cvAccess.style.display = 'none';
+    D.daysRemaining.style.display = 'block';
+    D.daysNum.textContent = '0';
+    D.hoursNum.textContent = '0';
+    D.minsNum.textContent = '0';
+    D.progressFill.style.width = '0%';
+    D.codeGenere.innerHTML = '&#9889; Code expir&eacute;';
+    D.identifiantGenere.innerHTML = '&#127919; Identifiant : expir&eacute;';
+    D.error.style.display = 'block';
+    D.error.innerHTML = '&#9200; Acc&egrave;s expir&eacute;. Le contenu est bloqu&eacute;. <br><br>' +
+      '&#128260; <strong>Nouvelle inscription n\u00E9cessaire</strong> pour obtenir un nouveau code d\u2019acc\u00E8s de 7 jours.<br><br>' +
+      '&#128176; Paiement : 500 F CFA par Mobile Money au <strong>+228 92 87 16 05</strong>.';
+    setTimeout(function(){ D.error.style.display = 'none'; }, 12000);
+  }
+
+  // ====== INITIALISATION AU CHARGEMENT ======
+
+  function init(){
+    // Migration sessionStorage → localStorage si nécessaire
+    var tmpCode = sessionStorage.getItem('temp_code');
+    if(tmpCode && !localStorage.getItem(CK)){
+      saveCredentials(tmpCode, sessionStorage.getItem('temp_identifiant'), sessionStorage.getItem('temp_nom'));
+      if(!localStorage.getItem(EK)){
+        saveExpiration(Date.now() + 7 * 86400000);
+      }
+      sessionStorage.removeItem('temp_code');
+      sessionStorage.removeItem('temp_identifiant');
+      sessionStorage.removeItem('temp_nom');
+    }
+
+    var exp = getExpiration();
+    var code = getCode();
+    var id = getIdentifiant();
+
+    // Vérifier expiration
+    if(exp && Date.now() >= exp){
+      clearAll();
+      showExpiredState();
+      return;
+    }
+
+    // Afficher les identifiants sauvegardés + le timer
+    if(code && id && exp){
+      showCredentials(code, id);
+      D.daysRemaining.style.display = 'block';
+      startTimer(exp);
+    }
+
+    // Afficher la section appropriée
+    if(isActive() && exp && Date.now() < exp){
+      showProtectedSection(exp);
+      D.cvAccess.style.display = 'block';
+    } else {
+      showForm();
+      // Si des identifiants existent mais pas actif, on reste sur l'onglet connexion
+      if(code && id){
+        D.cvAccess.style.display = 'block';
+        switchTab('login');
+        D.loginId.value = id;
+        D.loginCode.value = code;
+      } else {
+        switchTab('register');
+      }
+    }
+  }
+
+  // ====== GÉNÉRATION DU CODE ======
+
+  function generateCode(){
+    var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    var result = '';
+    for(var i = 8; i > 0; i--){
+      result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
+  }
+
+  function generateId(nom, tel){
+    var nomPart = nom.replace(/\s+/g, '').toLowerCase().slice(0, 8);
+    var telPart = tel.replace(/\D/g, '').slice(-4);
+    return 'tg_' + nomPart + '_' + telPart;
+  }
+
+  function sendWhatsApp(code, id, nom, tel, inspection, region){
+    var msg = '\uD83D\uDD10 *NOUVEAU COMPTE G\u00C9N\u00C9R\u00C9* \uD83D\uDD10%0A%0A' +
+      '\uD83D\uDC64 *Nom :* ' + nom + '%0A' +
+      '\uD83D\uDCDE *T\u00E9l :* ' + tel + '%0A' +
+      '\uD83C\uDFEB *Inspection :* ' + inspection + '%0A' +
+      '\uD83C\uDF0D *R\u00E9gion :* ' + region + '%0A%0A' +
+      '\uD83D\uDD11 *Code :* ' + code + '%0A' +
+      '\uD83C\uDF93 *Identifiant :* ' + id + '%0A%0A' +
+      '\uD83D\uDCB0 *Montant :* 500 FCFA (Mixx)%0A%0A' +
+      '\u2705 Envoy\u00E9 depuis APC Sciences Togo.';
+    window.open('https://wa.me/22892871605?text=' + msg, '_blank');
+  }
+
+  // ====== ACTIVATION DU COMPTE ======
+
+  window.activerCompte = function(){
+    var code = getCode();
+    var id = getIdentifiant();
+    var nom = getNom();
+    if(!code || !id || !nom){
+      alert('G\u00E9n\u00E9rez d\u2019abord un code.');
+      return;
+    }
+    // S'assurer que l'expiration existe
+    if(!localStorage.getItem(EK)){
+      saveExpiration(Date.now() + 7 * 86400000);
+    }
+    localStorage.setItem(SK, 'true');
+    alert('\u2705 Compte activ\u00E9 pour 7 jours !');
     window.location.reload();
   };
 
-  $('btnGenerer').addEventListener('click', function(){
-    const nom = $('nom').value.trim(),
-          tel = $('tel').value.trim(),
-          insp = $('inspection').value,
-          reg = $('region').value;
-    if(!nom||!tel||!insp||!reg){
-      showError('❌ Remplissez tous les champs.');
+  // ====== ÉVÉNEMENTS ======
+
+  D.btnGenerer.addEventListener('click', function(){
+    var nom = D.nom.value.trim();
+    var tel = D.tel.value.trim();
+    var inspection = D.inspection.value;
+    var region = D.region.value;
+
+    if(!nom || !tel || !inspection || !region){
+      D.error.style.display = 'block';
+      D.error.innerHTML = '\u274C Remplissez tous les champs.';
+      setTimeout(function(){ D.error.style.display = 'none'; }, 5000);
       return;
     }
-    const code = genCode(), id = genId(nom,tel);
-    $('codeGenere').innerHTML = `&#128274; <strong>${code}</strong>`;
-    $('identifiantGenere').innerHTML = `&#127919; Identifiant : <strong>${id}</strong>`;
-    dr.style.display = 'block';
-    const tempEnd = Date.now() + 7*864e5;
-    updateTempCD(tempEnd);
-    if(tempCountdownInterval) clearInterval(tempCountdownInterval);
-    tempCountdownInterval = setInterval(() => updateTempCD(tempEnd), 1000);
-    sendWA(code,id,nom,tel,insp,reg);
-    sessionStorage.setItem('temp_code',code);
-    sessionStorage.setItem('temp_identifiant',id);
-    sessionStorage.setItem('temp_nom',nom);
-    cv.style.display = 'block';
-    showAlert(`✅ Code envoyé par WhatsApp !<br>Code : ${code}<br>Identifiant : ${id}<br><br>⏳ En attente de confirmation du paiement.`);
-    setTimeout(() => {
-      if(confirm('💰 Paiement reçu ? OK pour activer le compte (simulation)')) window.activerCompte();
+
+    var code = generateCode();
+    var id = generateId(nom, tel);
+    var exp = Date.now() + 7 * 86400000;
+
+    // Sauvegarde immédiate dans localStorage
+    saveCredentials(code, id, nom);
+    saveExpiration(exp);
+
+    // Affichage
+    showCredentials(code, id);
+    D.daysRemaining.style.display = 'block';
+    startTimer(exp);
+
+    // Envoi WhatsApp
+    sendWhatsApp(code, id, nom, tel, inspection, region);
+
+    // Bouton CV visible
+    D.cvAccess.style.display = 'block';
+
+    // Message de confirmation
+    D.alert.style.display = 'block';
+    D.alert.innerHTML = '\u2705 Code g\u00E9n\u00E9r\u00E9 et envoy\u00E9 par WhatsApp !<br>' +
+      'Code : <strong>' + code + '</strong><br>' +
+      'Identifiant : <strong>' + id + '</strong><br><br>' +
+      '\u23F3 En attente de confirmation du paiement (500 FCFA).<br>' +
+      'Vos identifiants sont sauvegard\u00E9s automatiquement jusqu\u2019au ' +
+      new Date(exp).toLocaleDateString('fr-FR', {
+        day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      }) + '.';
+
+    setTimeout(function(){
+      D.alert.style.display = 'none';
+    }, 12000);
+
+    // Simulation activation après 5s
+    setTimeout(function(){
+      if(confirm('\uD83D\uDCB0 Paiement re\u00E7u ? OK pour activer le compte (simulation)')){
+        window.activerCompte();
+      }
     }, 5000);
   });
 
-  function goCV(){
-    const actif = localStorage.getItem(SK) === 'true',
-          exp = localStorage.getItem(EK);
-    if(actif && exp && Date.now() < parseInt(exp)){
+  function goToCV(){
+    var actif = localStorage.getItem(SK) === 'true';
+    var exp = getExpiration();
+    var code = getCode();
+
+    if(actif && exp && Date.now() < exp){
       window.location.href = 'CV.html';
       return;
     }
-    if(sessionStorage.getItem('temp_code')){
+    if(code && exp && Date.now() < exp){
       window.location.href = 'CV.html';
       return;
     }
-    const expDate = localStorage.getItem(EK);
-    if(expDate && Date.now() > parseInt(expDate)){
-      clearAccount();
-      showOrderFormHard();
+    if(exp && Date.now() >= exp){
+      clearAll();
+      showExpiredState();
       return;
     }
-    showError('❌ Accès non autorisé. Générez et activez un compte.');
-    setTimeout(() => { em.style.display = 'none'; }, 4000);
+    D.error.style.display = 'block';
+    D.error.innerHTML = '\u274C Acc\u00E8s non autoris\u00E9. G\u00E9n\u00E9rez et activez un compte.';
+    setTimeout(function(){ D.error.style.display = 'none'; }, 4000);
   }
 
-  function showOrderFormHard(){
-    ps.style.display = 'none';
-    cs.style.display = 'block';
-    mg.style.display = 'grid';
-    dr.style.display = 'none';
-    cv.style.display = 'none';
-    $('codeGenere').innerHTML = '&#9889; Code expir&eacute;';
-    $('identifiantGenere').innerHTML = '&#127919; Identifiant : expir&eacute;';
-    em.style.display = 'block';
-    em.innerHTML = '&#9200; Votre acc&egrave;s a expir&eacute;. Le fichier CV.html est bloqu&eacute;. Veuillez commander un nouveau compte.';
-    setTimeout(() => { em.style.display = 'none'; }, 8000);
-  }
+  D.btnAccesCV.addEventListener('click', goToCV);
+  D.btnAccesCV2.addEventListener('click', goToCV);
 
-  $('btnAccesCV').addEventListener('click', goCV);
-  $('btnAccesCV2').addEventListener('click', goCV);
-  $('btnNouveauCompte').addEventListener('click', ()=>{
-    clearAccount();
-    window.location.reload();
+  D.btnNouveauCompte.addEventListener('click', function(){
+    clearAll();
+    switchTab('register');
+    D.daysRemaining.style.display = 'none';
+    D.cvAccess.style.display = 'none';
+    resetCredentialsDisplay();
+    D.protected.style.display = 'none';
+    D.commande.style.display = 'block';
+    D.matieres.style.display = 'grid';
+    D.loginId.value = '';
+    D.loginCode.value = '';
   });
 
-  document.addEventListener('DOMContentLoaded', () => {
-    checkAccount();
-    const tc = sessionStorage.getItem('temp_code');
-    if(!tc) dr.style.display = 'none';
+  // ====== SCROLL : BOUTON HAUT ======
+
+  var btnTop = $('btnTop');
+  window.addEventListener('scroll', function(){
+    btnTop.style.display = window.scrollY > 400 ? 'flex' : 'none';
+  });
+  btnTop.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  const tp = $('btnTop');
-  window.addEventListener('scroll', ()=>{
-    tp.style.display = window.scrollY > 400 ? 'flex' : 'none';
-  });
-  tp.addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
+  // ====== ANCRES LISSES ======
 
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const t = document.querySelector(a.getAttribute('href'));
-      if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}) }
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var target = document.querySelector(a.getAttribute('href'));
+      if(target){
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
     });
   });
+
+  // ====== DÉMARRAGE ======
+
+  document.addEventListener('DOMContentLoaded', init);
 })();
 </script>
 </body>
